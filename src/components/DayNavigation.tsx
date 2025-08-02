@@ -4,28 +4,22 @@ interface DayNavigationProps {
   goToPreviousDay: () => void;
   goToNextDay: () => void;
   selectedDate: Date;
-  isFuture: boolean;
   formatDate: (date: Date) => string;
+  isToday: boolean;
 }
 
 export default function DayNavigation({
   goToPreviousDay,
   goToNextDay,
   selectedDate,
-  isFuture,
   formatDate,
+  isToday,
 }: DayNavigationProps) {
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 justify-between">
       <ArrowButton onClick={goToPreviousDay} direction="left" />
-      <h2 className="text-xl font-bold text-gray-100">
-        {formatDate(selectedDate)}'s Expenses
-      </h2>
-      <ArrowButton
-        onClick={goToNextDay}
-        direction="right"
-        disabled={isFuture}
-      />
+      <h2 className="text-gray-100">{formatDate(selectedDate)}</h2>
+      <ArrowButton onClick={goToNextDay} direction="right" disabled={isToday} />
     </div>
   );
 }

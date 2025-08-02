@@ -3,25 +3,23 @@ export const formatDate = (date: Date) => {
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
+  const dateString = date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  });
+
   if (date.toDateString() === today.toDateString()) {
-    return "Today";
+    return `Today, ${dateString}`;
   } else if (date.toDateString() === yesterday.toDateString()) {
-    return "Yesterday";
+    return `Yesterday, ${dateString}`;
   } else {
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      month: "short",
-      day: "numeric",
-    });
+    return dateString;
   }
 };
 
-export const isToday = (date: Date) => {
+export const getIsToday = (date: Date) => {
   return date.toDateString() === new Date().toDateString();
-};
-
-export const isFuture = (date: Date) => {
-  return date.toDateString() > new Date().toDateString();
 };
 
 export const getDateString = (date: Date) => {
@@ -38,4 +36,4 @@ export const subtractDays = (date: Date, days: number) => {
   const newDate = new Date(date);
   newDate.setDate(newDate.getDate() - days);
   return newDate;
-}; 
+};

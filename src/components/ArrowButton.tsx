@@ -28,7 +28,7 @@ const ArrowButton = ({
       title={direction === "left" ? "Previous day" : "Next day"}
     >
       <svg
-        className="w-4 h-4"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

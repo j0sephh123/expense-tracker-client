@@ -1,4 +1,3 @@
-import { formatTimeAgo } from "../utils/timeUtils";
 import type { Expense } from "../types/expense";
 
 interface ExpenseCardProps {
@@ -17,7 +16,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: ExpenseCardProps) => {
               <span className="font-medium text-gray-100 text-sm truncate">
                 {expense.subcategory_name || "Unknown"}
               </span>
-              <span className="text-xs text-gray-400">
+              <span className="text-sm text-gray-400">
                 • {expense.category_name || "Unknown Category"}
               </span>
             </div>
@@ -26,9 +25,6 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: ExpenseCardProps) => {
                 {expense.note}
               </p>
             )}
-            <p className="text-xs text-gray-500 mt-0.5">
-              {formatTimeAgo(expense.created_at)}
-            </p>
           </div>
         </div>
       </div>
@@ -43,7 +39,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: ExpenseCardProps) => {
             title="Edit expense"
           >
             <svg
-              className="w-3.5 h-3.5"
+              className="w-4 h-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -62,7 +58,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: ExpenseCardProps) => {
             title="Delete expense"
           >
             <svg
-              className="w-3.5 h-3.5"
+              className="w-4 h-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

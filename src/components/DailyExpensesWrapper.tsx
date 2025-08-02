@@ -3,15 +3,10 @@ import { useTodayExpenses } from "../api/expenses";
 import ErrorComponent from "../shared/ErrorComponent";
 import Loading from "../shared/Loading";
 import DayNavigation from "./DayNavigation";
-import {
-  formatDate,
-  isToday,
-  isFuture,
-  addDays,
-  subtractDays,
-} from "../utils/date";
+import { formatDate, getIsToday, addDays, subtractDays } from "../utils/date";
 import NoExpenses from "../shared/NoExpenses";
 import ExpenseCard from "./ExpenseCard";
+import TotalExpenses from "./TotalExpenses";
 
 const DailyExpensesWrapper = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -21,15 +16,7 @@ const DailyExpensesWrapper = () => {
     error,
   } = useTodayExpenses(selectedDate);
 
-  console.log("DailyExpensesWrapper:", {
-    selectedDate: selectedDate.toISOString(),
-    expenses,
-    isLoading,
-    error,
-    expensesLength: expenses.length,
-    isToday: isToday(selectedDate),
-    isFuture: isFuture(selectedDate),
-  });
+  const isToday = getIsToday(selectedDate);
 
   const goToPreviousDay = () => {
     setSelectedDate(subtractDays(selectedDate, 1));
@@ -37,10 +24,6 @@ const DailyExpensesWrapper = () => {
 
   const goToNextDay = () => {
     setSelectedDate(addDays(selectedDate, 1));
-  };
-
-  const goToToday = () => {
-    setSelectedDate(new Date());
   };
 
   const handleEdit = (expenseId: number) => {
@@ -63,35 +46,14 @@ const DailyExpensesWrapper = () => {
 
   return (
     <div className="bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700">
-      <div className="flex justify-between items-center mb-3">
-        <DayNavigation
-          goToPreviousDay={goToPreviousDay}
-          goToNextDay={goToNextDay}
-          selectedDate={selectedDate}
-          isFuture={isFuture(selectedDate)}
-          formatDate={formatDate}
-        />
-        <div className="flex items-center space-x-3">
-          {!isToday(selectedDate) && (
-            <button
-              onClick={goToToday}
-              className="px-2 py-1 text-xs text-blue-400 hover:text-blue-300 hover:bg-gray-700 rounded transition-colors duration-200"
-            >
-              Today
-            </button>
-          )}
-          {expenses.length > 0 && (
-            <div className="text-right">
-              <div className="text-xs text-gray-400">Total</div>
-              <div className="text-xl font-bold text-green-400">
-                {expenses
-                  .reduce((sum, expense) => sum + expense.amount, 0)
-                  .toFixed(2)}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <DayNavigation
+        goToPreviousDay={goToPreviousDay}
+        goToNextDay={goToNextDay}
+        selectedDate={selectedDate}
+        formatDate={formatDate}
+        isToday={isToday}
+      />
+      {expenses.length > 0 && <TotalExpenses expenses={expenses} />}
 
       {expenses.length === 0 ? (
         <NoExpenses />

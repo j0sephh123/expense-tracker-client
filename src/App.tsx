@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SidePanel } from "./components/SidePanel";
 import { HamburgerButton } from "./components/HamburgerButton";
-import DailyExpenses from "./components/DailyExpenses";
+import DailyExpensesWrapper from "./components/DailyExpensesWrapper";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,13 +18,13 @@ function App() {
       <div className="min-h-screen bg-bg-primary text-text-primary transition-colors duration-200">
         <HamburgerButton />
 
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-4xl font-bold text-center mb-8">
+        <div className="container mx-auto px-4 py-6">
+          <h1 className="text-2xl font-bold text-center mb-4">
             Expense Tracker
           </h1>
 
           <div className="max-w-4xl mx-auto">
-            <DailyExpenses />
+            <DailyExpensesWrapper />
           </div>
         </div>
 

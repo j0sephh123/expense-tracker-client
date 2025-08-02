@@ -1,4 +1,4 @@
-import { useSidePanelStore } from "../store/sidePanelStore";
+import { useSidePanelStore } from "./sidePanelStore";
 
 export const SidePanel = () => {
   const { isOpen, close } = useSidePanelStore();

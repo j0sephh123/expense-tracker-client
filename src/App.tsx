@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SidePanel } from "./components/SidePanel";
-import { HamburgerButton } from "./components/HamburgerButton";
+import { SidePanel } from "./features/SidePanel/SidePanel";
+import { HamburgerButton } from "./features/SidePanel/HamburgerButton";
 import DailyExpensesWrapper from "./components/DailyExpensesWrapper";
 
 const queryClient = new QueryClient({

@@ -101,10 +101,10 @@ const DailyExpenses = ({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center space-x-2">
                     <span className="font-medium text-gray-100 text-sm truncate">
-                      {expense.subcategory?.name || "Unknown"}
+                      {expense.subcategory_name || "Unknown"}
                     </span>
                     <span className="text-xs text-gray-400">
-                      • {expense.category?.name || "Unknown Category"}
+                      • {expense.category_name || "Unknown Category"}
                     </span>
                   </div>
                   {expense.note && (

@@ -5,13 +5,8 @@ export interface Expense {
   user_id: number | null;
   note: string | null;
   created_at: string;
-  category?: {
-    id: number;
-    name: string;
-  };
-  subcategory?: {
-    id: number;
-    name: string;
-    category_id: number;
-  };
+  user_email?: string;
+  subcategory_name?: string;
+  category_id?: number;
+  category_name?: string;
 }

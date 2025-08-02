@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTodayExpenses } from "../api/expenses";
-import ErrorComponent from "./ErrorComponent";
-import Loading from "./Loading";
+import ErrorComponent from "../shared/ErrorComponent";
+import Loading from "../shared/Loading";
 import DayNavigation from "./DayNavigation";
 import {
   formatDate,
@@ -10,7 +10,7 @@ import {
   addDays,
   subtractDays,
 } from "../utils/date";
-import NoExpenses from "./NoExpenses";
+import NoExpenses from "../shared/NoExpenses";
 import ExpenseCard from "./ExpenseCard";
 
 const DailyExpensesWrapper = () => {

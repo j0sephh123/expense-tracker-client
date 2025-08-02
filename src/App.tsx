@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SidePanel } from "./features/SidePanel/SidePanel";
 import { HamburgerButton } from "./features/SidePanel/HamburgerButton";
 import DailyExpensesWrapper from "./components/DailyExpensesWrapper";
+import Navigation from "./components/Navigation";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,6 +28,8 @@ function App() {
             <DailyExpensesWrapper />
           </div>
         </div>
+
+        <Navigation />
 
         <SidePanel />
       </div>

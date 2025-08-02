@@ -12,16 +12,16 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: ExpenseCardProps) => {
       <div className="flex-1">
         <div className="flex items-center space-x-2">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-col space-y-1">
               <span className="font-medium text-gray-100 text-sm truncate">
                 {expense.subcategory_name || "Unknown"}
               </span>
-              <span className="text-sm text-gray-400">
-                • {expense.category_name || "Unknown Category"}
+              <span className="text-xs text-gray-400">
+                {expense.category_name || "Unknown Category"}
               </span>
             </div>
             {expense.note && (
-              <p className="text-xs text-gray-300 mt-0.5 truncate">
+              <p className="text-xs text-gray-300 mt-1 truncate">
                 {expense.note}
               </p>
             )}
@@ -39,7 +39,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: ExpenseCardProps) => {
             title="Edit expense"
           >
             <svg
-              className="w-4 h-4"
+              className="w-3.5 h-3.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -58,7 +58,7 @@ const ExpenseCard = ({ expense, onEdit, onDelete }: ExpenseCardProps) => {
             title="Delete expense"
           >
             <svg
-              className="w-4 h-4"
+              className="w-3.5 h-3.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

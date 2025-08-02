@@ -43,11 +43,11 @@ export default function Navigation() {
         </Link>
         <Link
           className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
-            isActive("/")
+            isActive("/create-expense")
               ? "text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-400"
               : "text-base-content hover:text-primary"
           }`}
-          to="/"
+          to="/create-expense"
           data-discover="true"
         >
           <svg

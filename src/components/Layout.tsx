@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { SidePanel } from "../features/SidePanel/SidePanel";
 import { HamburgerButton } from "../features/SidePanel/HamburgerButton";
-import Navigation from "./Navigation";
+import Navigation from "../shared/Navigation/Navigation";
 
 export default function Layout() {
   return (

@@ -1,4 +1,4 @@
-import DailyExpensesWrapper from "./components/DailyExpensesWrapper";
+import DailyExpenses from "./components/DailyExpenses";
 
 function App() {
   return (
@@ -6,7 +6,7 @@ function App() {
       <h1 className="text-2xl font-bold text-center mb-4">Expense Tracker</h1>
 
       <div className="max-w-4xl mx-auto">
-        <DailyExpensesWrapper />
+        <DailyExpenses />
       </div>
     </>
   );

@@ -1,10 +1,12 @@
-export default function Navigation() {
+import { Link } from "react-router";
+
+  export default function Navigation() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-base-300 border-t border-base-200 px-4 py-2">
       <div className="max-w-md mx-auto flex justify-around items-center">
-        <a
+        <Link
           className="flex flex-col items-center p-2 rounded-lg transition-colors text-primary"
-          href="/categories"
+          to="/categories"
           data-discover="true"
         >
           <svg
@@ -25,10 +27,10 @@ export default function Navigation() {
             <path d="M16 10v6"></path>
           </svg>
           <span className="text-xs mt-1">Categories</span>
-        </a>
-        <a
+        </Link>
+        <Link
           className="flex flex-col items-center p-2 rounded-lg transition-colors text-base-content hover:text-primary"
-          href="/"
+          to="/"
           data-discover="true"
         >
           <svg
@@ -48,10 +50,10 @@ export default function Navigation() {
             <path d="M12 8v8"></path>
           </svg>
           <span className="text-xs mt-1">Add Expense</span>
-        </a>
-        <a
+        </Link>
+        <Link
           className="flex flex-col items-center p-2 rounded-lg transition-colors text-base-content hover:text-primary"
-          href="/summary"
+          to="/summary"
           data-discover="true"
         >
           <svg
@@ -72,7 +74,7 @@ export default function Navigation() {
             <path d="M7 6h3"></path>
           </svg>
           <span className="text-xs mt-1">Summary</span>
-        </a>
+        </Link>
       </div>
     </nav>
   );

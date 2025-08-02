@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -9,30 +10,24 @@ interface HealthResponse {
   message?: string;
 }
 
+const fetchHealth = async (): Promise<HealthResponse> => {
+  const response = await api.get<HealthResponse>("/health");
+  return response;
+};
+
 function App() {
   const [count, setCount] = useState(0);
-  const [healthStatus, setHealthStatus] = useState<string>("");
-  const [healthError, setHealthError] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const checkHealth = async () => {
-    setIsLoading(true);
-    setHealthError("");
-    setHealthStatus("");
-
-    try {
-      const response = await api.get<HealthResponse>("/health");
-      setHealthStatus(response.status || "OK");
-    } catch (error) {
-      setHealthError(error instanceof Error ? error.message : "Unknown error");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    checkHealth();
-  }, []);
+  const {
+    data: healthData,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["health"],
+    queryFn: fetchHealth,
+    retry: 1,
+  });
 
   return (
     <>
@@ -56,13 +51,17 @@ function App() {
 
       <div className="card">
         <h3>API Health Check</h3>
-        <button onClick={checkHealth} disabled={isLoading}>
+        <button onClick={() => refetch()} disabled={isLoading}>
           {isLoading ? "Checking..." : "Check Health"}
         </button>
-        {healthStatus && (
-          <p style={{ color: "green" }}>Status: {healthStatus}</p>
+        {healthData && (
+          <p style={{ color: "green" }}>Status: {healthData.status}</p>
         )}
-        {healthError && <p style={{ color: "red" }}>Error: {healthError}</p>}
+        {error && (
+          <p style={{ color: "red" }}>
+            Error: {error instanceof Error ? error.message : "Unknown error"}
+          </p>
+        )}
       </div>
 
       <p className="read-the-docs">

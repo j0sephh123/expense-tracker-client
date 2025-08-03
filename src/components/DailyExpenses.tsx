@@ -7,12 +7,10 @@ import { formatDate, getIsToday, addDays, subtractDays } from "../utils/date";
 import NoExpenses from "../shared/NoExpenses";
 import Card from "../shared/Card/Card";
 import TotalExpenses from "./TotalExpenses";
-import { ActionModal } from "../shared/ActionModal";
+import { useDeleteModalStore } from "../store/deleteModalStore";
 
 const DailyExpenses = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [expenseToDelete, setExpenseToDelete] = useState<number | null>(null);
   const {
     data: expenses = [],
     isLoading,
@@ -20,6 +18,7 @@ const DailyExpenses = () => {
   } = useTodayExpenses(selectedDate);
 
   const deleteExpense = useDeleteExpense();
+  const { open: openDeleteModal } = useDeleteModalStore();
 
   const isToday = getIsToday(selectedDate);
 
@@ -36,21 +35,9 @@ const DailyExpenses = () => {
   };
 
   const handleDelete = (expenseId: number) => {
-    setExpenseToDelete(expenseId);
-    setDeleteModalOpen(true);
-  };
-
-  const confirmDelete = () => {
-    if (expenseToDelete) {
-      deleteExpense.mutate(expenseToDelete);
-      setDeleteModalOpen(false);
-      setExpenseToDelete(null);
-    }
-  };
-
-  const cancelDelete = () => {
-    setDeleteModalOpen(false);
-    setExpenseToDelete(null);
+    openDeleteModal(expenseId, () => {
+      deleteExpense.mutate(expenseId);
+    });
   };
 
   if (isLoading) {
@@ -89,16 +76,6 @@ const DailyExpenses = () => {
           ))}
         </div>
       )}
-      <ActionModal
-        open={deleteModalOpen}
-        onConfirm={confirmDelete}
-        onCancel={cancelDelete}
-        title="Delete Expense"
-        description="Are you sure you want to delete this expense? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        loading={deleteExpense.isPending}
-      />
     </div>
   );
 };

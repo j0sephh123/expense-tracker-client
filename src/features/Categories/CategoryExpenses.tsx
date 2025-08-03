@@ -1,6 +1,9 @@
 import { useParams, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
-import { useCategoryExpensesByMonth } from "../../api/expenses";
+import {
+  useCategoryExpensesByMonth,
+  useDeleteExpense,
+} from "../../api/expenses";
 import MonthNavigation from "../../components/MonthNavigation";
 import PageWrapper from "../../shared/PageWrapper";
 import TotalExpenses from "../../components/TotalExpenses";
@@ -8,11 +11,15 @@ import Card from "../../shared/Card/Card";
 import Loading from "../../shared/Loading";
 import ErrorComponent from "../../shared/ErrorComponent";
 import NoExpenses from "../../shared/NoExpenses";
+import { useDeleteModalStore } from "../../store/deleteModalStore";
 
 export default function CategoryExpenses() {
   const { id, month } = useParams();
   const navigate = useNavigate();
   const [selectedMonth, setSelectedMonth] = useState(new Date());
+
+  const deleteExpense = useDeleteExpense();
+  const { open: openDeleteModal } = useDeleteModalStore();
 
   useEffect(() => {
     if (month) {
@@ -37,7 +44,9 @@ export default function CategoryExpenses() {
   };
 
   const handleDelete = (expenseId: number) => {
-    console.log("Delete expense:", expenseId);
+    openDeleteModal(expenseId, () => {
+      deleteExpense.mutate(expenseId);
+    });
   };
 
   const isCurrentMonth = () => {

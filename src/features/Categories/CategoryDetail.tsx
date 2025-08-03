@@ -1,8 +1,8 @@
 import { useParams } from "react-router";
 import { useCategory } from "../../api/categories";
 import PageWrapper from "../../shared/PageWrapper";
-import Card from "../../shared/Card";
 import type { Subcategory } from "../../types/category";
+import Card from "../../shared/Card";
 
 export default function CategoryDetail() {
   const { id } = useParams();

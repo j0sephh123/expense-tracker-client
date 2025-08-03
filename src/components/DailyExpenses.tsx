@@ -5,7 +5,7 @@ import Loading from "../shared/Loading";
 import DayNavigation from "./DayNavigation";
 import { formatDate, getIsToday, addDays, subtractDays } from "../utils/date";
 import NoExpenses from "../shared/NoExpenses";
-import ExpenseCard from "./ExpenseCard";
+import Card from "../shared/Card";
 import TotalExpenses from "./TotalExpenses";
 
 const DailyExpenses = () => {
@@ -58,7 +58,7 @@ const DailyExpenses = () => {
       ) : (
         <div className="space-y-2">
           {expenses.map((expense) => (
-            <ExpenseCard
+            <Card
               key={expense.id}
               expense={expense}
               onEdit={handleEdit}

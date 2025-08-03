@@ -15,6 +15,32 @@ export default function Navigation() {
       <div className="max-w-md mx-auto flex justify-around items-center">
         <Link
           className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+            isActive("/")
+              ? "text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-400"
+              : "text-base-content hover:text-primary"
+          }`}
+          to="/"
+          data-discover="true"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-home w-6 h-6"
+          >
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+          </svg>
+          <span className="text-xs mt-1">Home</span>
+        </Link>
+        <Link
+          className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
             isActive("/categories")
               ? "text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-400"
               : "text-base-content hover:text-primary"

@@ -1,4 +1,5 @@
 import { Edit, Trash2 } from "lucide-react";
+import IconButton from "../IconButton";
 
 interface CardProps {
   title: string;
@@ -67,22 +68,20 @@ const Card = ({
             )}
             <div className="flex space-x-1">
               {onEdit && (
-                <button
+                <IconButton
                   onClick={onEdit}
-                  className="p-1.5 text-gray-400 hover:text-blue-400 hover:bg-gray-600 rounded transition-colors duration-200"
+                  variant="primary"
                   title="Edit"
-                >
-                  <Edit className="w-3.5 h-3.5" />
-                </button>
+                  icon={<Edit className="w-3.5 h-3.5" />}
+                />
               )}
               {onDelete && (
-                <button
+                <IconButton
                   onClick={onDelete}
-                  className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-600 rounded transition-colors duration-200"
+                  variant="danger"
                   title="Delete"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
+                  icon={<Trash2 className="w-3.5 h-3.5" />}
+                />
               )}
             </div>
           </div>

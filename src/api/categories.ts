@@ -12,6 +12,13 @@ interface Category {
   subcategories: Subcategory[];
 }
 
+interface SubcategoryDetail {
+  id: number;
+  name: string;
+  category_id: number;
+  category_name: string;
+}
+
 export const useCategories = () => {
   return useQuery({
     queryKey: ["categories"],
@@ -28,6 +35,18 @@ export const useCategory = (id: string) => {
     queryKey: ["category", id],
     queryFn: async (): Promise<Category> => {
       return await api.get<Category>(`/categories/${id}`);
+    },
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+};
+
+export const useSubcategory = (id: string) => {
+  return useQuery({
+    queryKey: ["subcategory", id],
+    queryFn: async (): Promise<SubcategoryDetail> => {
+      return await api.get<SubcategoryDetail>(`/subcategories/${id}`);
     },
     enabled: !!id,
     staleTime: 5 * 60 * 1000, // 5 minutes

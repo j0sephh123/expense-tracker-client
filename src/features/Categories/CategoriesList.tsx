@@ -5,6 +5,7 @@ import type { Category } from "../../types/category";
 import Card from "../../shared/Card/Card";
 import { ActionModal } from "../../shared/ActionModal";
 import { useState } from "react";
+import PageWrapper from "../../shared/PageWrapper";
 
 type Props = {
   onClick: (category: Category) => void;
@@ -47,6 +48,7 @@ export default function CategoriesList({ onClick }: Props) {
   };
 
   return (
+    <PageWrapper title="Categories">
     <div className="space-y-3">
       {categories.map((category) => (
         <Card
@@ -77,8 +79,9 @@ export default function CategoriesList({ onClick }: Props) {
               className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500"
             />
           </label>
-        </div>
-      </ActionModal>
-    </div>
+            </div>
+        </ActionModal>
+      </div>
+    </PageWrapper>
   );
 }

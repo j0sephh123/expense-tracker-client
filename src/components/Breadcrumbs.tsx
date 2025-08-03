@@ -1,10 +1,11 @@
 import { useParams, useNavigate } from "react-router";
-import { useCategory } from "../api/categories";
+import { useCategory, useSubcategory } from "../api/categories";
 
 export default function Breadcrumbs() {
   const { id, subcategoryId } = useParams();
   const navigate = useNavigate();
   const { data: category } = useCategory(id || "");
+  const { data: subcategory } = useSubcategory(subcategoryId || "");
 
   if (!id) {
     return null;
@@ -26,7 +27,13 @@ export default function Breadcrumbs() {
     });
   }
 
-  if (subcategoryId) {
+  if (subcategoryId && subcategory) {
+    breadcrumbs.push({
+      name: subcategory.name,
+      path: `/categories/${id}/${subcategoryId}`,
+      onClick: () => {},
+    });
+  } else if (subcategoryId) {
     breadcrumbs.push({
       name: `Subcategory ${subcategoryId}`,
       path: `/categories/${id}/${subcategoryId}`,

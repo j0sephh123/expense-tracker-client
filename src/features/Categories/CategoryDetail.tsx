@@ -15,7 +15,7 @@ export default function CategoryDetail() {
   return (
     <PageWrapper title={category?.name || ""}>
       <div className="space-y-3">
-        {category?.subcategories.map((subcategory) => (
+        {category?.subcategories?.map((subcategory) => (
           <Card
             key={subcategory.id}
             title={subcategory.name}

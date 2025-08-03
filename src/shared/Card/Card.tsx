@@ -44,23 +44,21 @@ const Card = ({
     >
       {hasActions ? (
         <>
-          <div className="flex-1">
-            <div className="flex items-center">
-              <div className="flex-1 min-w-0 cursor-pointer" onClick={onClick}>
-                <div className="flex flex-col space-y-1">
-                  <span className="font-medium text-gray-100 text-sm truncate">
-                    {title}
-                  </span>
-                  {subtitle && (
-                    <span className="text-xs text-gray-400">{subtitle}</span>
-                  )}
-                </div>
-                {description && (
-                  <p className="text-xs text-gray-300 mt-1 truncate">
-                    {description}
-                  </p>
+          <div className="flex items-center">
+            <div className="flex-1 min-w-0 cursor-pointer" onClick={onClick}>
+              <div className="flex flex-col space-y-1">
+                <span className="font-medium text-gray-100 text-md truncate">
+                  {title}
+                </span>
+                {subtitle && (
+                  <span className="text-xs text-gray-400">{subtitle}</span>
                 )}
               </div>
+              {description && (
+                <p className="text-xs text-gray-300 mt-1 truncate">
+                  {description}
+                </p>
+              )}
             </div>
           </div>
           <div className="flex items-center ml-2">
@@ -88,7 +86,7 @@ const Card = ({
       )}
 
       {hasHoverActions && (
-        <div className="flex items-center justify-end mt-3">
+        <div className="flex gap-2 items-center justify-end">
           {hoverActions.map((action, index) => (
             <button
               key={index}

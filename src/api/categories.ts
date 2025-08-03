@@ -65,7 +65,7 @@ export const useUpdateCategory = () => {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.refetchQueries({ queryKey: ["categories"] });
     },
   });
 };
@@ -81,7 +81,84 @@ export const useUpdateSubcategory = () => {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.refetchQueries({ queryKey: ["categories"] });
+    },
+  });
+};
+
+export const useCreateCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ name }: { name: string }) => {
+      return await api.post<{ id: number; name: string; message: string }>(
+        `/categories`,
+        { name }
+      );
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ["categories"] });
+      queryClient.refetchQueries({ queryKey: ["category"] });
+      queryClient.refetchQueries({ queryKey: ["subcategory"] });
+    },
+  });
+};
+
+export const useCreateSubcategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      name,
+      category_id,
+    }: {
+      name: string;
+      category_id: number;
+    }) => {
+      return await api.post<{
+        id: number;
+        name: string;
+        category_id: number;
+        message: string;
+      }>(`/subcategories`, { name, category_id });
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ["categories"] });
+      queryClient.refetchQueries({ queryKey: ["category"] });
+      queryClient.refetchQueries({ queryKey: ["subcategory"] });
+    },
+  });
+};
+
+export const useDeleteCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id }: { id: number }) => {
+      return await api.delete<{ message: string; id: number }>(
+        `/categories/${id}`
+      );
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ["categories"] });
+      queryClient.refetchQueries({ queryKey: ["category"] });
+    },
+  });
+};
+
+export const useDeleteSubcategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id }: { id: number }) => {
+      return await api.delete<{ message: string; id: number }>(
+        `/subcategories/${id}`
+      );
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ["categories"] });
+      queryClient.refetchQueries({ queryKey: ["category"] });
+      queryClient.refetchQueries({ queryKey: ["subcategory"] });
     },
   });
 };

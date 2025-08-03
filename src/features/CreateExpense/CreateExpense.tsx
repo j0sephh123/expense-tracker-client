@@ -22,9 +22,7 @@ export default function CreateExpense() {
           <PageWrapper title="Create Expense">
             <div className="pt-0">
               <AmountInput />
-
               <SelectionToggle />
-
               <div className="mb-4">
                 <h3 className="text-lg font-medium text-white mb-4">
                   Select Subcategory

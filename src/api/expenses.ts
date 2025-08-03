@@ -26,7 +26,7 @@ export const useCreateExpense = () => {
       return api.post<CreateExpenseResponse>("/expenses", data);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+      queryClient.refetchQueries({ queryKey: ["expenses"] });
     },
   });
 };
@@ -39,7 +39,7 @@ export const useDeleteExpense = () => {
       return api.delete(`/expenses/${expenseId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+      queryClient.refetchQueries({ queryKey: ["expenses"] });
     },
   });
 };

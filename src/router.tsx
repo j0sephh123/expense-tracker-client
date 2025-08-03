@@ -3,7 +3,7 @@ import Layout from "./components/Layout";
 import App from "./App";
 import NotFound from "./components/NotFound";
 import CreateExpense from "./features/CreateExpense/CreateExpense";
-import Summary from "./features/Summary/Summary";
+import CreateCategory from "./features/Categories/CreateCategory";
 import CategoryDetail from "./features/Categories/CategoryDetail";
 import CategoryExpenses from "./features/Expenses/CategoryExpenses";
 import SubcategoryDetail from "./features/Subcategories/SubcategoryDetail";
@@ -29,7 +29,7 @@ export const router = (
         </Route>
 
         <Route path="create-expense" element={<CreateExpense />} />
-        <Route path="summary" element={<Summary />} />
+        <Route path="create-category" element={<CreateCategory />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

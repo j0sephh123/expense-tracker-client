@@ -36,29 +36,18 @@ export const useCreateExpense = () => {
   });
 };
 
-export const useDeleteExpense = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (expenseId: number): Promise<void> => {
-      return api.delete(`/expenses/${expenseId}`);
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ["expenses"] });
-    },
-  });
-};
-
 export const useTodayExpenses = (date?: Date) => {
   const targetDate = date || new Date();
   const dateString = getDateString(targetDate);
   const user = useAuthStore((state) => state.user);
 
   return useQuery({
-    queryKey: ["expenses", "today", dateString, user?.id],
+    queryKey: ["expenses", "today", dateString, user?.id, user?.role],
     queryFn: async (): Promise<Expense[]> => {
       try {
-        const userParam = user?.id ? `&user_id=${user.id}` : "";
+        // Don't send user_id if user is ADMIN
+        const userParam =
+          user?.role === "ADMIN" ? "" : user?.id ? `&user_id=${user.id}` : "";
         return await api.get<Expense[]>(
           `/expenses?date_from=${dateString}&date_to=${dateString}&order_by=date&order_dir=desc${userParam}`
         );
@@ -84,10 +73,12 @@ export const useExpenses = (params?: {
   const user = useAuthStore((state) => state.user);
   const queryParams = new URLSearchParams();
 
-  // Always use the current user's ID if not explicitly provided
-  const userId = params?.user_id !== undefined ? params.user_id : user?.id;
-  if (userId !== undefined) {
-    queryParams.append("user_id", userId.toString());
+  // Only add user_id if user is not ADMIN and not explicitly provided
+  if (user?.role !== "ADMIN") {
+    const userId = params?.user_id !== undefined ? params.user_id : user?.id;
+    if (userId !== undefined) {
+      queryParams.append("user_id", userId.toString());
+    }
   }
 
   if (params?.category_id) {
@@ -124,7 +115,7 @@ export const useExpenses = (params?: {
   const endpoint = `/expenses${queryString ? `?${queryString}` : ""}`;
 
   return useQuery({
-    queryKey: ["expenses", params, user?.id],
+    queryKey: ["expenses", params, user?.id, user?.role],
     queryFn: async (): Promise<Expense[]> => {
       return api.get<Expense[]>(endpoint);
     },
@@ -153,9 +144,12 @@ export const useSubcategoryExpensesByMonth = (
       dateFrom,
       dateTo,
       user?.id,
+      user?.role,
     ],
     queryFn: async (): Promise<Expense[]> => {
-      const userParam = user?.id ? `&user_id=${user.id}` : "";
+      // Don't send user_id if user is ADMIN
+      const userParam =
+        user?.role === "ADMIN" ? "" : user?.id ? `&user_id=${user.id}` : "";
       return api.get<Expense[]>(
         `/expenses?subcategory_id=${subcategoryId}&date_from=${dateFrom}&date_to=${dateTo}&order_by=date&order_dir=desc${userParam}`
       );
@@ -174,9 +168,12 @@ export const useSubcategoryExpensesByMonth = (
       dateTo,
       "totals",
       user?.id,
+      user?.role,
     ],
     queryFn: async (): Promise<{ total_amount: number }> => {
-      const userParam = user?.id ? `&user_id=${user.id}` : "";
+      // Don't send user_id if user is ADMIN
+      const userParam =
+        user?.role === "ADMIN" ? "" : user?.id ? `&user_id=${user.id}` : "";
       return api.get<{ total_amount: number }>(
         `/expenses?subcategory_id=${subcategoryId}&date_from=${dateFrom}&date_to=${dateTo}&aggregates_only=true${userParam}`
       );
@@ -230,9 +227,12 @@ export const useCategoryExpensesByMonth = (categoryId: number, month: Date) => {
       dateFrom,
       dateTo,
       user?.id,
+      user?.role,
     ],
     queryFn: async (): Promise<Expense[]> => {
-      const userParam = user?.id ? `&user_id=${user.id}` : "";
+      // Don't send user_id if user is ADMIN
+      const userParam =
+        user?.role === "ADMIN" ? "" : user?.id ? `&user_id=${user.id}` : "";
       return api.get<Expense[]>(
         `/expenses?category_id=${categoryId}&date_from=${dateFrom}&date_to=${dateTo}&order_by=date&order_dir=desc${userParam}`
       );
@@ -251,9 +251,12 @@ export const useCategoryExpensesByMonth = (categoryId: number, month: Date) => {
       dateTo,
       "totals",
       user?.id,
+      user?.role,
     ],
     queryFn: async (): Promise<{ total_amount: number }> => {
-      const userParam = user?.id ? `&user_id=${user.id}` : "";
+      // Don't send user_id if user is ADMIN
+      const userParam =
+        user?.role === "ADMIN" ? "" : user?.id ? `&user_id=${user.id}` : "";
       return api.get<{ total_amount: number }>(
         `/expenses?category_id=${categoryId}&date_from=${dateFrom}&date_to=${dateTo}&aggregates_only=true${userParam}`
       );
@@ -288,4 +291,17 @@ export const useCategoryExpensesByMonth = (categoryId: number, month: Date) => {
     formatMonthYear,
     currentMonth: month,
   };
+};
+
+export const useDeleteExpense = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (expenseId: number): Promise<void> => {
+      return api.delete(`/expenses/${expenseId}`);
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ["expenses"] });
+    },
+  });
 };

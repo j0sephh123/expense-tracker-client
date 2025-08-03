@@ -22,3 +22,15 @@ export const useCategories = () => {
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 };
+
+export const useCategory = (id: string) => {
+  return useQuery({
+    queryKey: ["category", id],
+    queryFn: async (): Promise<Category> => {
+      return await api.get<Category>(`/categories/${id}`);
+    },
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+};

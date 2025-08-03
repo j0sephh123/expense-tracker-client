@@ -52,13 +52,15 @@ export const useDeleteExpense = () => {
 export const useTodayExpenses = (date?: Date) => {
   const targetDate = date || new Date();
   const dateString = getDateString(targetDate);
+  const user = useAuthStore((state) => state.user);
 
   return useQuery({
-    queryKey: ["expenses", "today", dateString],
+    queryKey: ["expenses", "today", dateString, user?.id],
     queryFn: async (): Promise<Expense[]> => {
       try {
+        const userParam = user?.id ? `&user_id=${user.id}` : "";
         return await api.get<Expense[]>(
-          `/expenses?date_from=${dateString}&date_to=${dateString}&order_by=date&order_dir=desc`
+          `/expenses?date_from=${dateString}&date_to=${dateString}&order_by=date&order_dir=desc${userParam}`
         );
       } catch (error) {
         console.error("Failed to fetch today's expenses:", error);
@@ -79,10 +81,13 @@ export const useExpenses = (params?: {
   order_by?: "amount" | "date";
   order_dir?: "asc" | "desc";
 }) => {
+  const user = useAuthStore((state) => state.user);
   const queryParams = new URLSearchParams();
 
-  if (params?.user_id !== undefined) {
-    queryParams.append("user_id", params.user_id.toString());
+  // Always use the current user's ID if not explicitly provided
+  const userId = params?.user_id !== undefined ? params.user_id : user?.id;
+  if (userId !== undefined) {
+    queryParams.append("user_id", userId.toString());
   }
 
   if (params?.category_id) {
@@ -119,7 +124,7 @@ export const useExpenses = (params?: {
   const endpoint = `/expenses${queryString ? `?${queryString}` : ""}`;
 
   return useQuery({
-    queryKey: ["expenses", params],
+    queryKey: ["expenses", params, user?.id],
     queryFn: async (): Promise<Expense[]> => {
       return api.get<Expense[]>(endpoint);
     },
@@ -134,6 +139,7 @@ export const useSubcategoryExpensesByMonth = (
 ) => {
   const startOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
   const endOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+  const user = useAuthStore((state) => state.user);
 
   const dateFrom = getDateString(startOfMonth);
   const dateTo = getDateString(endOfMonth);
@@ -146,10 +152,12 @@ export const useSubcategoryExpensesByMonth = (
       "month",
       dateFrom,
       dateTo,
+      user?.id,
     ],
     queryFn: async (): Promise<Expense[]> => {
+      const userParam = user?.id ? `&user_id=${user.id}` : "";
       return api.get<Expense[]>(
-        `/expenses?subcategory_id=${subcategoryId}&date_from=${dateFrom}&date_to=${dateTo}&order_by=date&order_dir=desc`
+        `/expenses?subcategory_id=${subcategoryId}&date_from=${dateFrom}&date_to=${dateTo}&order_by=date&order_dir=desc${userParam}`
       );
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -165,10 +173,12 @@ export const useSubcategoryExpensesByMonth = (
       dateFrom,
       dateTo,
       "totals",
+      user?.id,
     ],
     queryFn: async (): Promise<{ total_amount: number }> => {
+      const userParam = user?.id ? `&user_id=${user.id}` : "";
       return api.get<{ total_amount: number }>(
-        `/expenses?subcategory_id=${subcategoryId}&date_from=${dateFrom}&date_to=${dateTo}&aggregates_only=true`
+        `/expenses?subcategory_id=${subcategoryId}&date_from=${dateFrom}&date_to=${dateTo}&aggregates_only=true${userParam}`
       );
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -206,15 +216,25 @@ export const useSubcategoryExpensesByMonth = (
 export const useCategoryExpensesByMonth = (categoryId: number, month: Date) => {
   const startOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
   const endOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+  const user = useAuthStore((state) => state.user);
 
   const dateFrom = getDateString(startOfMonth);
   const dateTo = getDateString(endOfMonth);
 
   const expensesQuery = useQuery({
-    queryKey: ["expenses", "category", categoryId, "month", dateFrom, dateTo],
+    queryKey: [
+      "expenses",
+      "category",
+      categoryId,
+      "month",
+      dateFrom,
+      dateTo,
+      user?.id,
+    ],
     queryFn: async (): Promise<Expense[]> => {
+      const userParam = user?.id ? `&user_id=${user.id}` : "";
       return api.get<Expense[]>(
-        `/expenses?category_id=${categoryId}&date_from=${dateFrom}&date_to=${dateTo}&order_by=date&order_dir=desc`
+        `/expenses?category_id=${categoryId}&date_from=${dateFrom}&date_to=${dateTo}&order_by=date&order_dir=desc${userParam}`
       );
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -230,10 +250,12 @@ export const useCategoryExpensesByMonth = (categoryId: number, month: Date) => {
       dateFrom,
       dateTo,
       "totals",
+      user?.id,
     ],
     queryFn: async (): Promise<{ total_amount: number }> => {
+      const userParam = user?.id ? `&user_id=${user.id}` : "";
       return api.get<{ total_amount: number }>(
-        `/expenses?category_id=${categoryId}&date_from=${dateFrom}&date_to=${dateTo}&aggregates_only=true`
+        `/expenses?category_id=${categoryId}&date_from=${dateFrom}&date_to=${dateTo}&aggregates_only=true${userParam}`
       );
     },
     staleTime: 5 * 60 * 1000, // 5 minutes

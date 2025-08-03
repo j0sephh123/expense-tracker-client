@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import clsx from "clsx";
 
 interface IconButtonProps {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   icon: JSX.Element;
   variant?: "primary" | "secondary" | "danger" | "success";
   title?: string;

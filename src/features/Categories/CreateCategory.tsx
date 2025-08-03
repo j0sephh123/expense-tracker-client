@@ -167,21 +167,17 @@ export default function CreateCategory() {
             <button
               type="submit"
               disabled={!isFormValid() || isSubmitting || categoriesLoading}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md"
+              className={`w-full px-4 py-2 text-white font-medium rounded-md transition-colors duration-200 ${
+                !isFormValid() || isSubmitting || categoriesLoading
+                  ? "bg-gray-400 opacity-60"
+                  : "bg-blue-600"
+              }`}
             >
               {isSubmitting
                 ? "Creating..."
                 : `Create ${
                     createType === "category" ? "Category" : "Subcategory"
                   }`}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => navigate("/categories")}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
-            >
-              Cancel
             </button>
           </div>
         </form>

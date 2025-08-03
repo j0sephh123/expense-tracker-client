@@ -12,7 +12,7 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-base-300 border-t border-base-200 px-4 py-2">
+    <nav className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 px-4 py-2">
       <div className="max-w-md mx-auto flex justify-around items-center">
         <Link
           className={`flex flex-col items-center p-2 rounded-lg transition-colors ${

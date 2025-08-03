@@ -9,6 +9,11 @@ interface CardProps {
   onEdit?: () => void;
   onDelete?: () => void;
   onClick?: () => void;
+  hoverActions?: {
+    label: string;
+    onClick: () => void;
+    variant?: "primary" | "secondary";
+  }[];
 }
 
 const Card = ({
@@ -19,8 +24,10 @@ const Card = ({
   onEdit,
   onDelete,
   onClick,
+  hoverActions,
 }: CardProps) => {
   const hasActions = onEdit || onDelete;
+  const hasHoverActions = hoverActions && hoverActions.length > 0;
 
   const baseClasses = "rounded-lg border transition-colors duration-200";
   const interactiveClasses =
@@ -30,10 +37,10 @@ const Card = ({
 
   return (
     <div
-      className={`${baseClasses} ${
+      className={`${baseClasses} relative ${
         hasActions ? interactiveClasses : simpleClasses
       }`}
-      onClick={!hasActions && onClick ? onClick : undefined}
+      onClick={!hasActions && !hasHoverActions && onClick ? onClick : undefined}
     >
       {hasActions ? (
         <>
@@ -85,6 +92,27 @@ const Card = ({
       ) : (
         <div className="text-lg font-medium text-gray-900 dark:text-white">
           {title}
+        </div>
+      )}
+
+      {hasHoverActions && (
+        <div className="flex items-center justify-center space-x-2 mt-3">
+          {hoverActions.map((action, index) => (
+            <button
+              key={index}
+              onClick={(e) => {
+                e.stopPropagation();
+                action.onClick();
+              }}
+              className={`px-4 py-2 rounded-md transition-colors text-sm font-medium ${
+                action.variant === "secondary"
+                  ? "bg-gray-600 hover:bg-gray-700 text-white"
+                  : "bg-blue-600 hover:bg-blue-700 text-white"
+              }`}
+            >
+              {action.label}
+            </button>
+          ))}
         </div>
       )}
     </div>

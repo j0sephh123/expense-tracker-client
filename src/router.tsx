@@ -6,6 +6,7 @@ import NotFound from "./components/NotFound";
 import CreateExpense from "./features/CreateExpense/CreateExpense";
 import Summary from "./features/Summary/Summary";
 import CategoryDetail from "./features/Categories/CategoryDetail";
+import CategoryExpenses from "./features/Categories/CategoryExpenses";
 import SubcategoryDetail from "./features/Categories/SubcategoryDetail";
 import CategoriesWrapper from "./components/CategoriesWrapper";
 
@@ -18,6 +19,7 @@ export const router = (
         <Route path="categories" element={<CategoriesWrapper />}>
           <Route index path="" element={<Categories />} />
           <Route path=":id" element={<CategoryDetail />} />
+          <Route path=":id/expenses" element={<CategoryExpenses />} />
           <Route path=":id/:subcategoryId" element={<SubcategoryDetail />} />
           <Route
             path=":id/:subcategoryId/:month"

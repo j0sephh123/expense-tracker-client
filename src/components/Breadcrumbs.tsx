@@ -58,7 +58,7 @@ export default function Breadcrumbs() {
   }
 
   return (
-    <nav className="flex items-center space-x-2 text-sm text-gray-400 mt-10 mb-2">
+    <nav className="flex items-center space-x-2 text-sm text-gray-400 mt-10 mb-4 bg-gray-800 rounded-lg p-3 border border-gray-700">
       {breadcrumbs.map((breadcrumb, index) => (
         <div key={breadcrumb.path} className="flex items-center">
           {index > 0 && <span className="mx-2 text-gray-500">/</span>}

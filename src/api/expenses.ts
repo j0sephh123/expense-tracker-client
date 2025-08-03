@@ -14,62 +14,9 @@ export const useTodayExpenses = (date?: Date) => {
         return await api.get<Expense[]>(
           `/expenses?date_from=${dateString}&date_to=${dateString}&order_by=date&order_dir=desc`
         );
-      } catch {
-        console.log("API not available, using mock data for", dateString);
-        const mockExpenses: Expense[] = [
-          {
-            id: 1,
-            amount: 25.5,
-            subcategory_id: 1,
-            user_id: 1,
-            note: "Lunch at the cafe",
-            created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-            category: {
-              id: 1,
-              name: "Food",
-            },
-            subcategory: {
-              id: 1,
-              name: "Restaurant",
-              category_id: 1,
-            },
-          },
-          {
-            id: 2,
-            amount: 15.0,
-            subcategory_id: 2,
-            user_id: 1,
-            note: "Coffee and snacks",
-            created_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-            category: {
-              id: 1,
-              name: "Food",
-            },
-            subcategory: {
-              id: 2,
-              name: "Coffee",
-              category_id: 1,
-            },
-          },
-          {
-            id: 3,
-            amount: 45.0,
-            subcategory_id: 3,
-            user_id: 1,
-            note: "Gas station",
-            created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
-            category: {
-              id: 2,
-              name: "Transport",
-            },
-            subcategory: {
-              id: 3,
-              name: "Fuel",
-              category_id: 2,
-            },
-          },
-        ];
-        return mockExpenses;
+      } catch (error) {
+        console.error("Failed to fetch today's expenses:", error);
+        throw error;
       }
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -133,4 +80,79 @@ export const useExpenses = (params?: {
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
+};
+
+export const useSubcategoryExpensesByMonth = (
+  subcategoryId: number,
+  month: Date
+) => {
+  const startOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
+  const endOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+
+  const dateFrom = getDateString(startOfMonth);
+  const dateTo = getDateString(endOfMonth);
+
+  const expensesQuery = useQuery({
+    queryKey: [
+      "expenses",
+      "subcategory",
+      subcategoryId,
+      "month",
+      dateFrom,
+      dateTo,
+    ],
+    queryFn: async (): Promise<Expense[]> => {
+      return api.get<Expense[]>(
+        `/expenses?subcategory_id=${subcategoryId}&date_from=${dateFrom}&date_to=${dateTo}&order_by=date&order_dir=desc`
+      );
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+
+  const totalsQuery = useQuery({
+    queryKey: [
+      "expenses",
+      "subcategory",
+      subcategoryId,
+      "month",
+      dateFrom,
+      dateTo,
+      "totals",
+    ],
+    queryFn: async (): Promise<{ total_amount: number }> => {
+      return api.get<{ total_amount: number }>(
+        `/expenses?subcategory_id=${subcategoryId}&date_from=${dateFrom}&date_to=${dateTo}&aggregates_only=true`
+      );
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+
+  const getPreviousMonth = () => {
+    return new Date(month.getFullYear(), month.getMonth() - 1, 1);
+  };
+
+  const getNextMonth = () => {
+    return new Date(month.getFullYear(), month.getMonth() + 1, 1);
+  };
+
+  const formatMonthYear = (date: Date) => {
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  return {
+    expenses: expensesQuery.data || [],
+    total: totalsQuery.data?.total_amount || 0,
+    isLoading: expensesQuery.isLoading || totalsQuery.isLoading,
+    isError: expensesQuery.isError || totalsQuery.isError,
+    error: expensesQuery.error || totalsQuery.error,
+    getPreviousMonth,
+    getNextMonth,
+    formatMonthYear,
+    currentMonth: month,
+  };
 };

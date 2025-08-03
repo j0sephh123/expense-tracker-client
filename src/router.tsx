@@ -9,11 +9,21 @@ import CategoryExpenses from "./features/Expenses/CategoryExpenses";
 import SubcategoryDetail from "./features/Subcategories/SubcategoryDetail";
 import CategoriesWrapper from "./components/CategoriesWrapper";
 import Categories from "./features/Categories/Categories";
+import Login from "./features/Auth/Login";
+import ProtectedRoute from "./features/Auth/ProtectedRoute";
 
 export const router = (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Navigate to="/expenses" replace />} />
         <Route path="expenses" element={<App />} />
         <Route path="categories" element={<CategoriesWrapper />}>

@@ -27,9 +27,12 @@ export const fetcher = async <T>(
 ): Promise<T> => {
   const url = `${API_BASE_URL}${endpoint}`;
 
+  const token = localStorage.getItem("authToken");
+
   const defaultOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
     ...options,
@@ -78,4 +81,32 @@ export const api = {
     fetcher<T>(endpoint, {
       method: "DELETE",
     }),
+};
+
+export const auth = {
+  login: async (email: string, password: string) => {
+    const response = await fetch(`${API_BASE_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      throw new ApiError(`Login failed: ${response.status}`, response.status);
+    }
+
+    const data = await response.json();
+    localStorage.setItem("authToken", data.token);
+    return data;
+  },
+
+  logout: () => {
+    localStorage.removeItem("authToken");
+  },
+
+  isAuthenticated: () => {
+    return !!localStorage.getItem("authToken");
+  },
 };

@@ -1,8 +1,15 @@
-import { Link, useLocation } from "react-router";
-import { Home, FolderKanban, CirclePlus, Plus } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { Home, FolderKanban, CirclePlus, Plus, LogOut } from "lucide-react";
+import { auth } from "../../utils/api";
 
 export default function Navigation() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    auth.logout();
+    navigate("/login");
+  };
 
   const isActive = (path: string) => {
     if (path === "/") {
@@ -62,6 +69,14 @@ export default function Navigation() {
           <Plus className="w-6 h-6" />
           <span className="text-xs mt-1">Add Category</span>
         </Link>
+        <button
+          onClick={handleLogout}
+          className="flex flex-col items-center p-2 rounded-lg transition-colors text-base-content hover:text-red-400"
+          data-discover="true"
+        >
+          <LogOut className="w-6 h-6" />
+          <span className="text-xs mt-1">Logout</span>
+        </button>
       </div>
     </nav>
   );

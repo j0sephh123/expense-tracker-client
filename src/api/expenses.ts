@@ -31,6 +31,19 @@ export const useCreateExpense = () => {
   });
 };
 
+export const useDeleteExpense = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (expenseId: number): Promise<void> => {
+      return api.delete(`/expenses/${expenseId}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+    },
+  });
+};
+
 export const useTodayExpenses = (date?: Date) => {
   const targetDate = date || new Date();
   const dateString = getDateString(targetDate);

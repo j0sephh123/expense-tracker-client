@@ -12,20 +12,21 @@ interface CreateExpenseState {
   reset: () => void;
 }
 
-export const useCreateExpenseStore = create<CreateExpenseState>((set) => ({
+const defaults: Pick<
+  CreateExpenseState,
+  "selectedSubcategoryId" | "note" | "amount" | "selectionMethod"
+> = Object.freeze({
   selectedSubcategoryId: null,
   note: "",
   amount: "",
   selectionMethod: "direct",
+});
+
+export const useCreateExpenseStore = create<CreateExpenseState>((set) => ({
+  ...defaults,
   setSelectedSubcategoryId: (id) => set({ selectedSubcategoryId: id }),
   setNote: (note) => set({ note }),
   setAmount: (amount) => set({ amount }),
   setSelectionMethod: (method) => set({ selectionMethod: method }),
-  reset: () =>
-    set({
-      selectedSubcategoryId: null,
-      note: "",
-      amount: "",
-      selectionMethod: "direct",
-    }),
+  reset: () => set(defaults),
 }));

@@ -1,10 +1,14 @@
 import { useCreateExpenseStore } from "./store/createExpenseStore";
+import { isValidNumber } from "../../utils/validation";
+import { useMemo } from "react";
 
 export default function CreateButton() {
   const { selectedSubcategoryId, note, selectionMethod, amount } =
     useCreateExpenseStore();
 
-  const isDisabled = !amount || amount.trim() === "";
+  const isDisabled = useMemo(() => {
+    return !isValidNumber(amount) || !selectedSubcategoryId;
+  }, [amount, selectedSubcategoryId]);
 
   const handleCreate = () => {
     console.log({ selectedSubcategoryId, note, selectionMethod, amount });

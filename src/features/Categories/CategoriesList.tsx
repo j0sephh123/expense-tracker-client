@@ -58,8 +58,6 @@ export default function CategoriesList({
           <Card
             key={category.id}
             title={category.name}
-            subtitle={`${category.subcategories.length} subcategories`}
-            onEdit={() => handleEditClick(category)}
             hoverActions={[
               {
                 label: "View Details",
@@ -72,6 +70,7 @@ export default function CategoriesList({
                 variant: "secondary",
               },
             ]}
+            onEdit={() => handleEditClick(category)}
           />
         ))}
 

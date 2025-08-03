@@ -70,14 +70,6 @@ const Card = ({
               </span>
             )}
             <div className="flex space-x-1">
-              {onEdit && (
-                <IconButton
-                  onClick={onEdit}
-                  variant="primary"
-                  title="Edit"
-                  icon={<Edit className="w-3.5 h-3.5" />}
-                />
-              )}
               {onDelete && (
                 <IconButton
                   onClick={onDelete}
@@ -96,7 +88,7 @@ const Card = ({
       )}
 
       {hasHoverActions && (
-        <div className="flex items-center justify-center space-x-2 mt-3">
+        <div className="flex items-center justify-end space-x-2 mt-3">
           {hoverActions.map((action, index) => (
             <button
               key={index}
@@ -104,7 +96,7 @@ const Card = ({
                 e.stopPropagation();
                 action.onClick();
               }}
-              className={`px-4 py-2 rounded-md transition-colors text-sm font-medium ${
+              className={`px-3 py-1.5 rounded-md transition-colors text-xs font-medium ${
                 action.variant === "secondary"
                   ? "bg-gray-600 hover:bg-gray-700 text-white"
                   : "bg-blue-600 hover:bg-blue-700 text-white"
@@ -113,6 +105,14 @@ const Card = ({
               {action.label}
             </button>
           ))}
+          {onEdit && (
+            <IconButton
+              onClick={onEdit}
+              variant="primary"
+              title="Edit"
+              icon={<Edit className="w-3.5 h-3.5" />}
+            />
+          )}
         </div>
       )}
     </div>

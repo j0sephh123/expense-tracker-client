@@ -1,17 +1,31 @@
+import { useMemo } from "react";
+import { useNavigate } from "react-router";
 import { useCreateExpenseStore } from "./store/createExpenseStore";
 import { isValidNumber } from "../../utils/validation";
-import { useMemo } from "react";
+import { useCreateExpense } from "../../api/expenses";
 
 export default function CreateButton() {
-  const { selectedSubcategoryId, note, selectionMethod, amount } =
+  const navigate = useNavigate();
+  const { selectedSubcategoryId, note, amount, reset } =
     useCreateExpenseStore();
+  const { mutateAsync: createExpense } = useCreateExpense();
 
-  const isDisabled = useMemo(() => {
-    return !isValidNumber(amount) || !selectedSubcategoryId;
-  }, [amount, selectedSubcategoryId]);
+  const isDisabled = useMemo(
+    () => !isValidNumber(amount) || !selectedSubcategoryId,
+    [amount, selectedSubcategoryId]
+  );
 
   const handleCreate = () => {
-    console.log({ selectedSubcategoryId, note, selectionMethod, amount });
+    if (isDisabled || !selectedSubcategoryId) return;
+
+    createExpense({
+      amount: parseFloat(amount),
+      subcategory_id: selectedSubcategoryId,
+      note,
+    }).then(() => {
+      reset();
+      navigate("/");
+    });
   };
 
   return (

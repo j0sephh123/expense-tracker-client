@@ -19,6 +19,10 @@ export const router = (
           <Route index path="" element={<Categories />} />
           <Route path=":id" element={<CategoryDetail />} />
           <Route path=":id/:subcategoryId" element={<SubcategoryDetail />} />
+          <Route
+            path=":id/:subcategoryId/:month"
+            element={<SubcategoryDetail />}
+          />
         </Route>
 
         <Route path="create-expense" element={<CreateExpense />} />

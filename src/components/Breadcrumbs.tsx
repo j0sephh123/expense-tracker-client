@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router";
 import { useCategory, useSubcategory } from "../api/categories";
 
 export default function Breadcrumbs() {
-  const { id, subcategoryId } = useParams();
+  const { id, subcategoryId, month } = useParams();
   const navigate = useNavigate();
   const { data: category } = useCategory(id || "");
   const { data: subcategory } = useSubcategory(subcategoryId || "");
@@ -31,14 +31,30 @@ export default function Breadcrumbs() {
     breadcrumbs.push({
       name: subcategory.name,
       path: `/categories/${id}/${subcategoryId}`,
-      onClick: () => {},
+      onClick: () => navigate(`/categories/${id}/${subcategoryId}`),
     });
   } else if (subcategoryId) {
     breadcrumbs.push({
       name: `Subcategory ${subcategoryId}`,
       path: `/categories/${id}/${subcategoryId}`,
-      onClick: () => {},
+      onClick: () => navigate(`/categories/${id}/${subcategoryId}`),
     });
+  }
+
+  if (month) {
+    const [year, monthNum] = month.split("-");
+    if (year && monthNum) {
+      const monthDate = new Date(parseInt(year), parseInt(monthNum) - 1, 1);
+      const monthName = monthDate.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      });
+      breadcrumbs.push({
+        name: monthName,
+        path: `/categories/${id}/${subcategoryId}/${month}`,
+        onClick: () => {},
+      });
+    }
   }
 
   return (

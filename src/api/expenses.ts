@@ -2,11 +2,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../utils/api";
 import type { Expense } from "../types/expense";
 import { getDateString } from "../utils/date";
+import { useAuthStore } from "../store/authStore";
 
 interface CreateExpenseRequest {
   amount: number;
   subcategory_id?: number;
-  user_id?: number;
   note?: string;
 }
 
@@ -18,12 +18,17 @@ interface CreateExpenseResponse {
 
 export const useCreateExpense = () => {
   const queryClient = useQueryClient();
+  const user = useAuthStore((state) => state.user);
 
   return useMutation({
     mutationFn: async (
       data: CreateExpenseRequest
     ): Promise<CreateExpenseResponse> => {
-      return api.post<CreateExpenseResponse>("/expenses", data);
+      const requestData = {
+        ...data,
+        user_id: user?.id,
+      };
+      return api.post<CreateExpenseResponse>("/expenses", requestData);
     },
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ["expenses"] });

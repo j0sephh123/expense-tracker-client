@@ -1,15 +1,6 @@
+import { useAuthStore } from "../store/authStore";
+
 const API_BASE_URL = "/api/v1";
-
-interface ApiResponse<T> {
-  data: T;
-  status: number;
-  message?: string;
-}
-
-interface ApiError {
-  message: string;
-  status: number;
-}
 
 class ApiError extends Error {
   status: number;
@@ -27,7 +18,7 @@ export const fetcher = async <T>(
 ): Promise<T> => {
   const url = `${API_BASE_URL}${endpoint}`;
 
-  const token = localStorage.getItem("authToken");
+  const token = useAuthStore.getState().token;
 
   const defaultOptions: RequestInit = {
     headers: {
@@ -67,12 +58,12 @@ export const fetcher = async <T>(
 
 export const api = {
   get: <T>(endpoint: string) => fetcher<T>(endpoint),
-  post: <T>(endpoint: string, data?: any) =>
+  post: <T>(endpoint: string, data?: unknown) =>
     fetcher<T>(endpoint, {
       method: "POST",
       body: data ? JSON.stringify(data) : undefined,
     }),
-  put: <T>(endpoint: string, data?: any) =>
+  put: <T>(endpoint: string, data?: unknown) =>
     fetcher<T>(endpoint, {
       method: "PUT",
       body: data ? JSON.stringify(data) : undefined,
@@ -98,15 +89,15 @@ export const auth = {
     }
 
     const data = await response.json();
-    localStorage.setItem("authToken", data.token);
+    useAuthStore.getState().login(data.token);
     return data;
   },
 
   logout: () => {
-    localStorage.removeItem("authToken");
+    useAuthStore.getState().logout();
   },
 
   isAuthenticated: () => {
-    return !!localStorage.getItem("authToken");
+    return useAuthStore.getState().isAuthenticated;
   },
 };

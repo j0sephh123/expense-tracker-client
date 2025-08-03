@@ -4,7 +4,6 @@ import {
   useUpdateSubcategory,
   useDeleteSubcategory,
 } from "../../api/categories";
-import { useSubcategoriesByExpenseCount } from "../../api/subcategories";
 import type { Subcategory } from "../../types/category";
 import SubcategoryCard from "../Subcategories/SubcategoryCard";
 import { useRenameModalStore } from "../../store/renameModalStore";
@@ -13,8 +12,6 @@ import { useDeleteModalStore } from "../../store/deleteModalStore";
 export default function CategoryDetail() {
   const { id } = useParams();
   const { data: category, refetch: refetchCategory } = useCategory(id || "");
-  const { data: subcategoryExpenseCounts = [] } =
-    useSubcategoriesByExpenseCount();
   const navigate = useNavigate();
   const { open: openRenameModal } = useRenameModalStore();
   const { open: openDeleteModal } = useDeleteModalStore();
@@ -49,28 +46,9 @@ export default function CategoryDetail() {
     );
   };
 
-  const getSubcategoryExpenseCount = (subcategoryId: number) => {
-    if (
-      !subcategoryExpenseCounts ||
-      !Array.isArray(subcategoryExpenseCounts) ||
-      subcategoryExpenseCounts.length === 0
-    ) {
-      return 0;
-    }
-
-    const expenseCount = subcategoryExpenseCounts.find(
-      (item) => item.subcategory_id === subcategoryId
-    );
-
-    return expenseCount?.expense_count ?? 0;
-  };
-
   return (
     <div className="space-y-4">
       {category?.subcategories?.map((subcategory) => {
-        const expenseCount = getSubcategoryExpenseCount(subcategory.id);
-        const canDelete = expenseCount === 0;
-
         return (
           <SubcategoryCard
             key={subcategory.id}
@@ -78,7 +56,8 @@ export default function CategoryDetail() {
             onClick={() => handleSubcategoryClick(subcategory)}
             onEdit={() => handleEditSubcategory(subcategory)}
             onDelete={() => handleDeleteSubcategory(subcategory)}
-            canDelete={canDelete}
+            // TODO fix
+            canDelete={false}
           />
         );
       })}

@@ -9,7 +9,6 @@ interface CardProps {
   onEdit?: () => void;
   onDelete?: () => void;
   onClick?: () => void;
-  variant?: "interactive" | "simple";
 }
 
 const Card = ({
@@ -20,11 +19,8 @@ const Card = ({
   onEdit,
   onDelete,
   onClick,
-  variant = "interactive",
 }: CardProps) => {
   const hasActions = onEdit || onDelete;
-  const isInteractive = variant === "interactive" && hasActions;
-  const isSimple = variant === "simple" || (!hasActions && onClick);
 
   const baseClasses = "rounded-lg border transition-colors duration-200";
   const interactiveClasses =
@@ -35,15 +31,15 @@ const Card = ({
   return (
     <div
       className={`${baseClasses} ${
-        isInteractive ? interactiveClasses : simpleClasses
+        hasActions ? interactiveClasses : simpleClasses
       }`}
-      onClick={isSimple ? onClick : undefined}
+      onClick={!hasActions && onClick ? onClick : undefined}
     >
-      {isInteractive ? (
+      {hasActions ? (
         <>
           <div className="flex-1">
             <div className="flex items-center space-x-2">
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 cursor-pointer" onClick={onClick}>
                 <div className="flex flex-col space-y-1">
                   <span className="font-medium text-gray-100 text-sm truncate">
                     {title}

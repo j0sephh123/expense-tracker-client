@@ -1,15 +1,20 @@
-import { useCategories } from "../../api/categories";
+import { useCategories, useUpdateCategory } from "../../api/categories";
 import ErrorComponent from "../../shared/ErrorComponent";
 import Loading from "../../shared/Loading";
 import type { Category } from "../../types/category";
 import Card from "../../shared/Card/Card";
+import { ActionModal } from "../../shared/ActionModal";
+import { useState } from "react";
 
 type Props = {
   onClick: (category: Category) => void;
 };
 
 export default function CategoriesList({ onClick }: Props) {
-  const { data: categories = [], isLoading, error } = useCategories();
+  const { data: categories = [], isLoading, error, refetch } = useCategories();
+  const updateCategory = useUpdateCategory();
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [editName, setEditName] = useState("");
 
   if (error) {
     return <ErrorComponent />;
@@ -19,6 +24,28 @@ export default function CategoriesList({ onClick }: Props) {
     return <Loading />;
   }
 
+  const handleEditClick = (category: Category) => {
+    setEditingCategory(category);
+    setEditName(category.name);
+  };
+
+  const handleSaveEdit = async () => {
+    if (editingCategory) {
+      await updateCategory.mutateAsync({
+        id: editingCategory.id,
+        name: editName,
+      });
+      setEditingCategory(null);
+      setEditName("");
+      refetch();
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCategory(null);
+    setEditName("");
+  };
+
   return (
     <div className="space-y-3">
       {categories.map((category) => (
@@ -26,8 +53,32 @@ export default function CategoriesList({ onClick }: Props) {
           key={category.id}
           title={category.name}
           onClick={() => onClick(category)}
+          onEdit={() => handleEditClick(category)}
         />
       ))}
+
+      <ActionModal
+        open={!!editingCategory}
+        onCancel={handleCancelEdit}
+        onConfirm={handleSaveEdit}
+        title="Edit category"
+        confirmText="Save"
+        cancelText="Cancel"
+        variant="custom"
+        loading={updateCategory.isPending}
+      >
+        <div className="space-y-4">
+          <label className="block text-sm">
+            <span className="text-gray-300">Name</span>
+            <input
+              aria-label="Category name"
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500"
+            />
+          </label>
+        </div>
+      </ActionModal>
     </div>
   );
 }

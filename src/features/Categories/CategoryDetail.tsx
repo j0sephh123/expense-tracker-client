@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import { useCategory, useUpdateSubcategory } from "../../api/categories";
 import type { Subcategory } from "../../types/category";
-import Card from "../../shared/Card/Card";
+import SubcategoryCard from "./SubcategoryCard";
 import { ActionModal } from "../../shared/ActionModal";
 import { useState } from "react";
 
@@ -43,7 +43,7 @@ export default function CategoryDetail() {
     <>
       <div className="space-y-3">
         {category?.subcategories?.map((subcategory) => (
-          <Card
+          <SubcategoryCard
             key={subcategory.id}
             title={subcategory.name}
             onClick={() => handleSubcategoryClick(subcategory)}

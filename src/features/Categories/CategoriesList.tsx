@@ -2,7 +2,7 @@ import { useCategories, useUpdateCategory } from "../../api/categories";
 import ErrorComponent from "../../shared/ErrorComponent";
 import Loading from "../../shared/Loading";
 import type { Category } from "../../types/category";
-import Card from "../../shared/Card/Card";
+import CategoryCard from "./CategoryCard";
 import { ActionModal } from "../../shared/ActionModal";
 import { useState } from "react";
 import PageWrapper from "../../shared/PageWrapper";
@@ -55,7 +55,7 @@ export default function CategoriesList({
     <PageWrapper title="Categories">
       <div className="space-y-3">
         {categories.map((category) => (
-          <Card
+          <CategoryCard
             key={category.id}
             title={category.name}
             hoverActions={[

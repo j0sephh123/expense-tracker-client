@@ -1,25 +1,13 @@
 import { useParams, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
-import {
-  useCategoryExpensesByMonth,
-  useDeleteExpense,
-} from "../../api/expenses";
+import { useCategoryExpensesByMonth } from "../../api/expenses";
 import MonthNavigation from "../../components/MonthNavigation";
-import PageWrapper from "../../shared/PageWrapper";
-import TotalExpenses from "../../components/TotalExpenses";
-import Card from "../../shared/Card/Card";
-import Loading from "../../shared/Loading";
-import ErrorComponent from "../../shared/ErrorComponent";
-import NoExpenses from "../../shared/NoExpenses";
-import { useDeleteModalStore } from "../../store/deleteModalStore";
+import ExpensesList from "../../components/ExpensesList";
 
 export default function CategoryExpenses() {
   const { id, month } = useParams();
   const navigate = useNavigate();
   const [selectedMonth, setSelectedMonth] = useState(new Date());
-
-  const deleteExpense = useDeleteExpense();
-  const { open: openDeleteModal } = useDeleteModalStore();
 
   useEffect(() => {
     if (month) {
@@ -38,16 +26,6 @@ export default function CategoryExpenses() {
     getNextMonth,
     formatMonthYear,
   } = useCategoryExpensesByMonth(parseInt(id || "0"), selectedMonth);
-
-  const handleEdit = (expenseId: number) => {
-    console.log("Edit expense:", expenseId);
-  };
-
-  const handleDelete = (expenseId: number) => {
-    openDeleteModal(expenseId, () => {
-      deleteExpense.mutate(expenseId);
-    });
-  };
 
   const isCurrentMonth = () => {
     const now = new Date();
@@ -73,45 +51,22 @@ export default function CategoryExpenses() {
     navigate(`/categories/${id}/expenses/${monthParam}`);
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <ErrorComponent />;
-  }
+  const navigationComponent = (
+    <MonthNavigation
+      goToPreviousMonth={goToPreviousMonth}
+      goToNextMonth={goToNextMonth}
+      selectedMonth={selectedMonth}
+      formatMonth={formatMonthYear}
+      isCurrentMonth={isCurrentMonth()}
+    />
+  );
 
   return (
-    <PageWrapper title="Category Expenses">
-      <div className="bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700">
-        <MonthNavigation
-          goToPreviousMonth={goToPreviousMonth}
-          goToNextMonth={goToNextMonth}
-          selectedMonth={selectedMonth}
-          formatMonth={formatMonthYear}
-          isCurrentMonth={isCurrentMonth()}
-        />
-
-        {expenses.length > 0 && <TotalExpenses expenses={expenses} />}
-
-        {expenses.length === 0 ? (
-          <NoExpenses />
-        ) : (
-          <div className="space-y-2">
-            {expenses.map((expense) => (
-              <Card
-                key={expense.id}
-                title={expense.subcategory_name || "Unknown"}
-                subtitle={expense.category_name || "Unknown Category"}
-                description={expense.note || undefined}
-                amount={expense.amount}
-                onEdit={() => handleEdit(expense.id)}
-                onDelete={() => handleDelete(expense.id)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </PageWrapper>
+    <ExpensesList
+      expenses={expenses}
+      isLoading={isLoading}
+      isError={isError}
+      navigationComponent={navigationComponent}
+    />
   );
 }

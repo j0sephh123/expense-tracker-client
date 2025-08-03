@@ -1,5 +1,7 @@
-import { useParams } from "react-router";
-import { useExpenses } from "../../api/expenses";
+import { useParams, useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { useCategoryExpensesByMonth } from "../../api/expenses";
+import MonthNavigation from "../../components/MonthNavigation";
 import PageWrapper from "../../shared/PageWrapper";
 import TotalExpenses from "../../components/TotalExpenses";
 import Card from "../../shared/Card/Card";
@@ -8,17 +10,27 @@ import ErrorComponent from "../../shared/ErrorComponent";
 import NoExpenses from "../../shared/NoExpenses";
 
 export default function CategoryExpenses() {
-  const { id } = useParams();
+  const { id, month } = useParams();
+  const navigate = useNavigate();
+  const [selectedMonth, setSelectedMonth] = useState(new Date());
+
+  useEffect(() => {
+    if (month) {
+      const [year, monthNum] = month.split("-");
+      if (year && monthNum) {
+        setSelectedMonth(new Date(parseInt(year), parseInt(monthNum) - 1, 1));
+      }
+    }
+  }, [month]);
 
   const {
-    data: expenses = [],
+    expenses,
     isLoading,
     isError,
-  } = useExpenses({
-    category_id: parseInt(id || "0"),
-    order_by: "date",
-    order_dir: "desc",
-  });
+    getPreviousMonth,
+    getNextMonth,
+    formatMonthYear,
+  } = useCategoryExpensesByMonth(parseInt(id || "0"), selectedMonth);
 
   const handleEdit = (expenseId: number) => {
     console.log("Edit expense:", expenseId);
@@ -26,6 +38,30 @@ export default function CategoryExpenses() {
 
   const handleDelete = (expenseId: number) => {
     console.log("Delete expense:", expenseId);
+  };
+
+  const isCurrentMonth = () => {
+    const now = new Date();
+    return (
+      selectedMonth.getMonth() === now.getMonth() &&
+      selectedMonth.getFullYear() === now.getFullYear()
+    );
+  };
+
+  const goToPreviousMonth = () => {
+    const prevMonth = getPreviousMonth();
+    const monthParam = `${prevMonth.getFullYear()}-${String(
+      prevMonth.getMonth() + 1
+    ).padStart(2, "0")}`;
+    navigate(`/categories/${id}/expenses/${monthParam}`);
+  };
+
+  const goToNextMonth = () => {
+    const nextMonth = getNextMonth();
+    const monthParam = `${nextMonth.getFullYear()}-${String(
+      nextMonth.getMonth() + 1
+    ).padStart(2, "0")}`;
+    navigate(`/categories/${id}/expenses/${monthParam}`);
   };
 
   if (isLoading) {
@@ -39,6 +75,14 @@ export default function CategoryExpenses() {
   return (
     <PageWrapper title="Category Expenses">
       <div className="bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700">
+        <MonthNavigation
+          goToPreviousMonth={goToPreviousMonth}
+          goToNextMonth={goToNextMonth}
+          selectedMonth={selectedMonth}
+          formatMonth={formatMonthYear}
+          isCurrentMonth={isCurrentMonth()}
+        />
+
         {expenses.length > 0 && <TotalExpenses expenses={expenses} />}
 
         {expenses.length === 0 ? (

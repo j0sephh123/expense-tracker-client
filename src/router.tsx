@@ -20,6 +20,7 @@ export const router = (
           <Route index path="" element={<Categories />} />
           <Route path=":id" element={<CategoryDetail />} />
           <Route path=":id/expenses" element={<CategoryExpenses />} />
+          <Route path=":id/expenses/:month" element={<CategoryExpenses />} />
           <Route path=":id/:subcategoryId" element={<SubcategoryDetail />} />
           <Route
             path=":id/:subcategoryId/:month"

@@ -156,3 +156,68 @@ export const useSubcategoryExpensesByMonth = (
     currentMonth: month,
   };
 };
+
+export const useCategoryExpensesByMonth = (categoryId: number, month: Date) => {
+  const startOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
+  const endOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+
+  const dateFrom = getDateString(startOfMonth);
+  const dateTo = getDateString(endOfMonth);
+
+  const expensesQuery = useQuery({
+    queryKey: ["expenses", "category", categoryId, "month", dateFrom, dateTo],
+    queryFn: async (): Promise<Expense[]> => {
+      return api.get<Expense[]>(
+        `/expenses?category_id=${categoryId}&date_from=${dateFrom}&date_to=${dateTo}&order_by=date&order_dir=desc`
+      );
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+
+  const totalsQuery = useQuery({
+    queryKey: [
+      "expenses",
+      "category",
+      categoryId,
+      "month",
+      dateFrom,
+      dateTo,
+      "totals",
+    ],
+    queryFn: async (): Promise<{ total_amount: number }> => {
+      return api.get<{ total_amount: number }>(
+        `/expenses?category_id=${categoryId}&date_from=${dateFrom}&date_to=${dateTo}&aggregates_only=true`
+      );
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+
+  const getPreviousMonth = () => {
+    return new Date(month.getFullYear(), month.getMonth() - 1, 1);
+  };
+
+  const getNextMonth = () => {
+    return new Date(month.getFullYear(), month.getMonth() + 1, 1);
+  };
+
+  const formatMonthYear = (date: Date) => {
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  return {
+    expenses: expensesQuery.data || [],
+    total: totalsQuery.data?.total_amount || 0,
+    isLoading: expensesQuery.isLoading || totalsQuery.isLoading,
+    isError: expensesQuery.isError || totalsQuery.isError,
+    error: expensesQuery.error || totalsQuery.error,
+    getPreviousMonth,
+    getNextMonth,
+    formatMonthYear,
+    currentMonth: month,
+  };
+};

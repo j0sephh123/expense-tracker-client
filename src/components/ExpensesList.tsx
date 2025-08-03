@@ -61,7 +61,7 @@ export default function ExpensesList({
       {expenses.length === 0 ? (
         <NoExpenses />
       ) : (
-        <div className="mb-10">
+        <div className="space-y-4">
           {expenses.map((expense) => (
             <ExpenseCard
               key={expense.id}

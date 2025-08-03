@@ -19,7 +19,7 @@ export default function Layout() {
     <div className="min-h-screen bg-bg-primary text-text-primary transition-colors duration-200">
       <HamburgerButton />
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-6 pb-24">
         <Outlet />
       </div>
 

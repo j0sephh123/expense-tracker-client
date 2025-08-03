@@ -44,7 +44,7 @@ export default function Categories() {
 
   return (
     <PageWrapper title="Categories">
-      <div className="space-y-3">
+      <div className="space-y-4">
         {categories.map((category) => (
           <CategoryCard
             key={category.id}

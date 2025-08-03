@@ -13,7 +13,7 @@ export default function CategoryDetail() {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {category?.subcategories?.map((subcategory) => (
         <SubcategoryCard
           key={subcategory.id}

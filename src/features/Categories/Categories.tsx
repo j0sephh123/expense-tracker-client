@@ -1,4 +1,3 @@
-import PageWrapper from "../../shared/PageWrapper";
 import type { Category } from "../../types/category";
 import CategoriesList from "./CategoriesList";
 import { useNavigate } from "react-router";
@@ -11,8 +10,6 @@ export default function Categories() {
   };
 
   return (
-    <PageWrapper title="Categories">
-      <CategoriesList onClick={handleCategoryClick} />
-    </PageWrapper>
+    <CategoriesList onClick={handleCategoryClick} />
   );
 }

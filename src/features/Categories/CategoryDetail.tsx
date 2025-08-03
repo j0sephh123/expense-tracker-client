@@ -1,6 +1,5 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useCategory, useUpdateSubcategory } from "../../api/categories";
-import PageWrapper from "../../shared/PageWrapper";
 import type { Subcategory } from "../../types/category";
 import Card from "../../shared/Card/Card";
 import { ActionModal } from "../../shared/ActionModal";
@@ -13,9 +12,9 @@ export default function CategoryDetail() {
   const [editingSubcategory, setEditingSubcategory] =
     useState<Subcategory | null>(null);
   const [editName, setEditName] = useState("");
-
+  const navigate = useNavigate();
   const handleSubcategoryClick = (subcategory: Subcategory) => {
-    console.log(subcategory);
+    navigate(`/categories/${id}/${subcategory.id}`);
   };
 
   const handleEditClick = (subcategory: Subcategory) => {
@@ -41,7 +40,7 @@ export default function CategoryDetail() {
   };
 
   return (
-    <PageWrapper title={category?.name || ""}>
+    <>
       <div className="space-y-3">
         {category?.subcategories?.map((subcategory) => (
           <Card
@@ -75,6 +74,6 @@ export default function CategoryDetail() {
           </label>
         </div>
       </ActionModal>
-    </PageWrapper>
+    </>
   );
 }

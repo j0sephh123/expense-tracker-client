@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { useCategory } from "../../api/categories";
 import PageWrapper from "../../shared/PageWrapper";
 import type { Subcategory } from "../../types/category";
-import Card from "../../shared/Card";
+import Card from "../../shared/Card/Card";
 
 export default function CategoryDetail() {
   const { id } = useParams();
@@ -20,6 +20,7 @@ export default function CategoryDetail() {
             key={subcategory.id}
             title={subcategory.name}
             onClick={() => handleSubcategoryClick(subcategory)}
+            variant="simple"
           />
         ))}
       </div>

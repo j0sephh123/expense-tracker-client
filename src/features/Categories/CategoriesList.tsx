@@ -2,7 +2,7 @@ import { useCategories } from "../../api/categories";
 import ErrorComponent from "../../shared/ErrorComponent";
 import Loading from "../../shared/Loading";
 import type { Category } from "../../types/category";
-import Card from "../../shared/Card";
+import Card from "../../shared/Card/Card";
 
 type Props = {
   onClick: (category: Category) => void;

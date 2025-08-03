@@ -5,7 +5,7 @@ import Loading from "../shared/Loading";
 import DayNavigation from "./DayNavigation";
 import { formatDate, getIsToday, addDays, subtractDays } from "../utils/date";
 import NoExpenses from "../shared/NoExpenses";
-import Card from "../shared/Card";
+import Card from "../shared/Card/Card";
 import TotalExpenses from "./TotalExpenses";
 
 const DailyExpenses = () => {
@@ -60,9 +60,12 @@ const DailyExpenses = () => {
           {expenses.map((expense) => (
             <Card
               key={expense.id}
-              expense={expense}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
+              title={expense.subcategory_name || "Unknown"}
+              subtitle={expense.category_name || "Unknown Category"}
+              description={expense.note || undefined}
+              amount={expense.amount}
+              onEdit={() => handleEdit(expense.id)}
+              onDelete={() => handleDelete(expense.id)}
             />
           ))}
         </div>

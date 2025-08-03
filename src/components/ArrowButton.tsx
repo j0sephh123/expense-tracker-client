@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ArrowButtonProps {
   onClick: () => void;
@@ -27,28 +28,11 @@ const ArrowButton = ({
       )}
       title={direction === "left" ? "Previous day" : "Next day"}
     >
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        {direction === "left" ? (
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        ) : (
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        )}
-      </svg>
+      {direction === "left" ? (
+        <ChevronLeft className="w-6 h-6" />
+      ) : (
+        <ChevronRight className="w-6 h-6" />
+      )}
     </button>
   );
 };

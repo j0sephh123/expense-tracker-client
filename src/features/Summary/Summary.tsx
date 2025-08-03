@@ -1,3 +1,5 @@
+import PageWrapper from "../../shared/PageWrapper";
+
 export default function Summary() {
-  return <div>Summary</div>;
+  return <PageWrapper title="Summary">Summary</PageWrapper>;
 }

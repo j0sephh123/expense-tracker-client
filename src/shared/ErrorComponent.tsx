@@ -15,7 +15,7 @@ export default function ErrorComponent() {
         </p>
         <button
           onClick={() => window.location.reload()}
-          className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+          className="mt-4 px-4 py-2 bg-blue-700 text-blue-100 rounded-lg transition-colors duration-200"
         >
           Try Again
         </button>

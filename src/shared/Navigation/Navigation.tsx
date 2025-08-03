@@ -17,8 +17,8 @@ export default function Navigation() {
         <Link
           className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
             isActive("/")
-              ? "text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-400"
-              : "text-base-content hover:text-primary"
+              ? "text-blue-400 bg-blue-900 dark:bg-blue-800 dark:text-blue-300"
+              : "text-base-content"
           }`}
           to="/"
           data-discover="true"
@@ -29,8 +29,8 @@ export default function Navigation() {
         <Link
           className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
             isActive("/categories")
-              ? "text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-400"
-              : "text-base-content hover:text-primary"
+              ? "text-blue-400 bg-blue-900 dark:bg-blue-800 dark:text-blue-300"
+              : "text-base-content"
           }`}
           to="/categories"
           data-discover="true"
@@ -41,8 +41,8 @@ export default function Navigation() {
         <Link
           className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
             isActive("/create-expense")
-              ? "text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-400"
-              : "text-base-content hover:text-primary"
+              ? "text-blue-400 bg-blue-900 dark:bg-blue-800 dark:text-blue-300"
+              : "text-base-content"
           }`}
           to="/create-expense"
           data-discover="true"
@@ -53,8 +53,8 @@ export default function Navigation() {
         <Link
           className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
             isActive("/summary")
-              ? "text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-400"
-              : "text-base-content hover:text-primary"
+              ? "text-blue-400 bg-blue-900 dark:bg-blue-800 dark:text-blue-300"
+              : "text-base-content"
           }`}
           to="/summary"
           data-discover="true"

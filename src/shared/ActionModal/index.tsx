@@ -129,7 +129,7 @@ export const ActionModal: FC<ActionModalProps> = ({
               <button
                 onClick={onCancel}
                 type="button"
-                className="flex-1 sm:flex-none rounded-lg px-4 py-2 text-sm font-medium bg-gray-800 hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
+                className="flex-1 sm:flex-none rounded-lg px-4 py-2 text-sm font-medium bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-gray-600"
               >
                 {cancelText}
               </button>
@@ -139,7 +139,7 @@ export const ActionModal: FC<ActionModalProps> = ({
                   onClick={onConfirm}
                   type="button"
                   disabled={loading}
-                  className="flex-1 sm:flex-none rounded-lg px-4 py-2 text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-indigo-400"
+                  className="flex-1 sm:flex-none rounded-lg px-4 py-2 text-sm font-semibold bg-indigo-700 disabled:opacity-60 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-indigo-600"
                 >
                   {loading ? "Processing..." : confirmText}
                 </button>

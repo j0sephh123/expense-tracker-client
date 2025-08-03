@@ -12,7 +12,7 @@ interface CardProps {
   hoverActions?: {
     label: string;
     onClick: () => void;
-    variant?: "primary" | "secondary";
+    variant?: "primary" | "secondary" | "orange";
   }[];
 }
 
@@ -31,9 +31,9 @@ const Card = ({
 
   const baseClasses = "rounded-lg border transition-colors duration-200";
   const interactiveClasses =
-    "flex items-center justify-between p-3 bg-gray-700 border-gray-600 hover:bg-gray-650";
+    "flex items-center justify-between p-3 bg-gray-700 border-gray-600";
   const simpleClasses =
-    "p-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700";
+    "p-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 cursor-pointer";
 
   return (
     <div
@@ -45,7 +45,7 @@ const Card = ({
       {hasActions ? (
         <>
           <div className="flex-1">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center">
               <div className="flex-1 min-w-0 cursor-pointer" onClick={onClick}>
                 <div className="flex flex-col space-y-1">
                   <span className="font-medium text-gray-100 text-sm truncate">
@@ -63,7 +63,7 @@ const Card = ({
               </div>
             </div>
           </div>
-          <div className="flex items-center space-x-2 ml-2">
+          <div className="flex items-center ml-2">
             {amount && (
               <span className="text-sm font-bold text-green-400">
                 {amount.toFixed(2)}
@@ -88,7 +88,7 @@ const Card = ({
       )}
 
       {hasHoverActions && (
-        <div className="flex items-center justify-end space-x-2 mt-3">
+        <div className="flex items-center justify-end mt-3">
           {hoverActions.map((action, index) => (
             <button
               key={index}
@@ -98,8 +98,10 @@ const Card = ({
               }}
               className={`px-3 py-1.5 rounded-md transition-colors text-xs font-medium ${
                 action.variant === "secondary"
-                  ? "bg-gray-600 hover:bg-gray-700 text-white"
-                  : "bg-blue-600 hover:bg-blue-700 text-white"
+                  ? "bg-gray-600 text-gray-200"
+                  : action.variant === "orange"
+                  ? "bg-amber-700 text-amber-100"
+                  : "bg-slate-600 text-slate-200"
               }`}
             >
               {action.label}

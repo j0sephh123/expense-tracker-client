@@ -31,7 +31,7 @@ export const DeleteResourceButton: FC<{
   return (
     <>
       <button
-        className="inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-500 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-red-400"
+        className="inline-flex items-center rounded-md bg-red-700 px-3 py-2 text-sm font-medium text-red-100 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-red-600"
         onClick={() => setOpen(true)}
       >
         Delete {resource.name}

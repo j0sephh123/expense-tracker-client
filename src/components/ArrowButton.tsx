@@ -23,7 +23,7 @@ const ArrowButton = ({
         "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50",
         disabled
           ? "text-gray-500 cursor-not-allowed opacity-50"
-          : "text-gray-400 hover:text-blue-400 hover:bg-gray-600 active:scale-95",
+          : "text-gray-400",
         className
       )}
       title={direction === "left" ? "Previous day" : "Next day"}

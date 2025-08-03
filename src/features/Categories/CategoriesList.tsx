@@ -60,14 +60,14 @@ export default function CategoriesList({
             title={category.name}
             hoverActions={[
               {
-                label: "View Details",
+                label: "Subcategories",
                 onClick: () => onViewDetails(category),
                 variant: "primary",
               },
               {
-                label: "View Expenses",
+                label: "Expenses",
                 onClick: () => onViewExpenses(category),
-                variant: "secondary",
+                variant: "orange",
               },
             ]}
             onEdit={() => handleEditClick(category)}

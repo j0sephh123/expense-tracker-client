@@ -22,7 +22,7 @@ export const EditResourceButton: FC<{
   return (
     <>
       <button
-        className="inline-flex items-center rounded-md bg-yellow-500 px-3 py-2 text-sm font-medium text-black hover:bg-yellow-400 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-yellow-300"
+        className="inline-flex items-center rounded-md bg-yellow-600 px-3 py-2 text-sm font-medium text-yellow-100 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-yellow-600"
         onClick={() => setOpen(true)}
       >
         Edit {resource.name}

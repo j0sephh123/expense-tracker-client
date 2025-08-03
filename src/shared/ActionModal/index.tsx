@@ -152,3 +152,6 @@ export const ActionModal: FC<ActionModalProps> = ({
     document.body
   );
 };
+
+export { EditResourceButton } from "./EditResourceButton";
+export { DeleteResourceButton } from "./DeleteResourceButton";

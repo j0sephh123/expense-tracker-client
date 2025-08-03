@@ -1,14 +1,14 @@
 import { Routes, Route, BrowserRouter, Navigate } from "react-router";
 import Layout from "./components/Layout";
 import App from "./App";
-import Categories from "./features/Categories/Categories";
 import NotFound from "./components/NotFound";
 import CreateExpense from "./features/CreateExpense/CreateExpense";
 import Summary from "./features/Summary/Summary";
 import CategoryDetail from "./features/Categories/CategoryDetail";
-import CategoryExpenses from "./features/Categories/CategoryExpenses";
-import SubcategoryDetail from "./features/Categories/SubcategoryDetail";
+import CategoryExpenses from "./features/Expenses/CategoryExpenses";
+import SubcategoryDetail from "./features/Subcategories/SubcategoryDetail";
 import CategoriesWrapper from "./components/CategoriesWrapper";
+import Categories from "./features/Categories/Categories";
 
 export const router = (
   <BrowserRouter>

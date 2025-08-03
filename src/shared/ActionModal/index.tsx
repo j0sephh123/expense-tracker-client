@@ -155,3 +155,4 @@ export const ActionModal: FC<ActionModalProps> = ({
 
 export { EditResourceButton } from "./EditResourceButton";
 export { DeleteResourceButton } from "./DeleteResourceButton";
+export { RenameModal } from "./RenameModal";

@@ -1,13 +1,9 @@
-import { Edit } from "lucide-react";
-import IconButton from "../../shared/IconButton/IconButton";
-
 interface SubcategoryCardProps {
   title: string;
   onClick?: () => void;
-  onEdit?: () => void;
 }
 
-const SubcategoryCard = ({ title, onClick, onEdit }: SubcategoryCardProps) => {
+const SubcategoryCard = ({ title, onClick }: SubcategoryCardProps) => {
   const baseClasses = "rounded-lg border transition-colors duration-200";
   const simpleClasses =
     "p-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 cursor-pointer";

@@ -2,16 +2,33 @@ import { create } from "zustand";
 
 interface DeleteModalState {
   isOpen: boolean;
-  expenseId: number | null;
+  itemId: number | null;
+  itemType: "expense" | "category" | "subcategory" | null;
+  itemName: string;
   onConfirm: (() => void) | null;
-  open: (expenseId: number, onConfirm: () => void) => void;
+  open: (
+    itemId: number,
+    itemType: "expense" | "category" | "subcategory",
+    itemName: string,
+    onConfirm: () => void
+  ) => void;
   close: () => void;
 }
 
 export const useDeleteModalStore = create<DeleteModalState>((set) => ({
   isOpen: false,
-  expenseId: null,
+  itemId: null,
+  itemType: null,
+  itemName: "",
   onConfirm: null,
-  open: (expenseId, onConfirm) => set({ isOpen: true, expenseId, onConfirm }),
-  close: () => set({ isOpen: false, expenseId: null, onConfirm: null }),
+  open: (itemId, itemType, itemName, onConfirm) =>
+    set({ isOpen: true, itemId, itemType, itemName, onConfirm }),
+  close: () =>
+    set({
+      isOpen: false,
+      itemId: null,
+      itemType: null,
+      itemName: "",
+      onConfirm: null,
+    }),
 }));

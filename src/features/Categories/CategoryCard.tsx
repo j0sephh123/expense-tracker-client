@@ -1,4 +1,4 @@
-import { Edit } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import clsx from "clsx";
 import IconButton from "../../shared/IconButton/IconButton";
 
@@ -7,6 +7,8 @@ interface CategoryCardProps {
   onClick: () => void;
   onEdit?: () => void;
   onTitleClick?: () => void;
+  onDelete?: () => void;
+  canDelete?: boolean;
 }
 
 const CategoryCard = ({
@@ -14,6 +16,8 @@ const CategoryCard = ({
   onClick,
   onEdit,
   onTitleClick,
+  onDelete,
+  canDelete = false,
 }: CategoryCardProps) => {
   const baseClasses = "rounded-lg border transition-colors duration-200";
   const simpleClasses =
@@ -50,6 +54,14 @@ const CategoryCard = ({
             variant="primary"
             title="Edit"
             icon={<Edit className="w-3.5 h-3.5" />}
+          />
+        )}
+        {canDelete && onDelete && (
+          <IconButton
+            onClick={onDelete}
+            variant="danger"
+            title="Delete"
+            icon={<Trash2 className="w-3.5 h-3.5" />}
           />
         )}
       </div>

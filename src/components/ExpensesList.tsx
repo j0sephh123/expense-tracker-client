@@ -40,7 +40,7 @@ export default function ExpensesList({
     if (onDelete) {
       onDelete(expenseId);
     } else {
-      openDeleteModal(expenseId, () => {
+      openDeleteModal(expenseId, "expense", "this expense", () => {
         deleteExpense.mutate(expenseId);
       });
     }

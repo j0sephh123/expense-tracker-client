@@ -4,15 +4,43 @@ import { HamburgerButton } from "../features/SidePanel/HamburgerButton";
 import Navigation from "../shared/Navigation/Navigation";
 import { ActionModal } from "../shared/ActionModal";
 import { useDeleteModalStore } from "../store/deleteModalStore";
+import { RenameModal } from "../shared/ActionModal/RenameModal";
 
 export default function Layout() {
-  const { isOpen, expenseId, onConfirm, close } = useDeleteModalStore();
+  const { isOpen, itemType, itemName, onConfirm, close } =
+    useDeleteModalStore();
 
   const handleConfirm = () => {
     if (onConfirm) {
       onConfirm();
     }
     close();
+  };
+
+  const getModalTitle = () => {
+    switch (itemType) {
+      case "expense":
+        return "Delete Expense";
+      case "category":
+        return "Delete Category";
+      case "subcategory":
+        return "Delete Subcategory";
+      default:
+        return "Delete Item";
+    }
+  };
+
+  const getModalDescription = () => {
+    switch (itemType) {
+      case "expense":
+        return "Are you sure you want to delete this expense? This action cannot be undone.";
+      case "category":
+        return `Are you sure you want to delete '${itemName}'? This action cannot be undone.`;
+      case "subcategory":
+        return `Are you sure you want to delete '${itemName}'? This action cannot be undone.`;
+      default:
+        return "Are you sure you want to delete this item? This action cannot be undone.";
+    }
   };
 
   return (
@@ -31,11 +59,13 @@ export default function Layout() {
         open={isOpen}
         onConfirm={handleConfirm}
         onCancel={close}
-        title="Delete Expense"
-        description="Are you sure you want to delete this expense? This action cannot be undone."
+        title={getModalTitle()}
+        description={getModalDescription()}
         confirmText="Delete"
         cancelText="Cancel"
       />
+
+      <RenameModal />
     </div>
   );
 }

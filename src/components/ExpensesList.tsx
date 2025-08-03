@@ -57,13 +57,11 @@ export default function ExpensesList({
   return (
     <div className="bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700">
       {navigationComponent}
-
       {expenses.length > 0 && <TotalExpenses expenses={expenses} />}
-
       {expenses.length === 0 ? (
         <NoExpenses />
       ) : (
-        <div className="space-y-2">
+        <div className="mb-10">
           {expenses.map((expense) => (
             <ExpenseCard
               key={expense.id}

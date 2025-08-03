@@ -293,6 +293,72 @@ export const useCategoryExpensesByMonth = (categoryId: number, month: Date) => {
   };
 };
 
+export const useGroupedExpensesBySubcategory = (
+  month: Date,
+  shouldFetch: boolean = false,
+  userId?: string
+) => {
+  const monthNumber = month.getMonth();
+  const year = month.getFullYear();
+  const user = useAuthStore((state) => state.user);
+
+  return useQuery({
+    queryKey: [
+      "expenses",
+      "grouped",
+      "subcategory",
+      "month",
+      monthNumber,
+      year,
+      userId,
+      user?.id,
+      user?.role,
+    ],
+    queryFn: async (): Promise<{
+      expenses: Array<{
+        subcategory_name: string;
+        category_name: string;
+        total: number;
+      }>;
+      total: string;
+    }> => {
+      try {
+        let userParam = "";
+        if (user?.role !== "ADMIN") {
+          userParam = user?.id ? `&user_id=${user.id}` : "";
+        } else if (userId !== undefined) {
+          if (userId === "") {
+            userParam = ""; // All users - no user_id parameter
+          } else if (userId === "0") {
+            userParam = "&user_id=0"; // No user
+          } else {
+            userParam = `&user_id=${userId}`; // Specific user
+          }
+        }
+
+        const response = await api.get<{
+          expenses: Array<{
+            subcategory_name: string;
+            category_name: string;
+            total: number;
+          }>;
+          total: string;
+        }>(
+          `/grouped-expenses-by-subcategory?month=${monthNumber}&year=${year}${userParam}`
+        );
+        console.log("Grouped expenses by subcategory:", response);
+        return response;
+      } catch (error) {
+        console.error("Failed to fetch grouped expenses:", error);
+        throw error;
+      }
+    },
+    enabled: shouldFetch,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+};
+
 export const useDeleteExpense = () => {
   const queryClient = useQueryClient();
 
@@ -303,5 +369,38 @@ export const useDeleteExpense = () => {
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ["expenses"] });
     },
+  });
+};
+
+export const useMemberUsers = () => {
+  const user = useAuthStore((state) => state.user);
+
+  return useQuery({
+    queryKey: ["users", "members", user?.id, user?.role],
+    queryFn: async (): Promise<
+      Array<{
+        id: number;
+        email: string;
+        display_name: string;
+        created_at: string;
+      }>
+    > => {
+      try {
+        const response = await api.get<
+          Array<{
+            id: number;
+            email: string;
+            display_name: string;
+            created_at: string;
+          }>
+        >("/member-users");
+        return response;
+      } catch (error) {
+        console.error("Failed to fetch member users:", error);
+        throw error;
+      }
+    },
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    gcTime: 30 * 60 * 1000, // 30 minutes
   });
 };

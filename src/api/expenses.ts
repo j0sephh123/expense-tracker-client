@@ -1,7 +1,35 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../utils/api";
 import type { Expense } from "../types/expense";
 import { getDateString } from "../utils/date";
+
+interface CreateExpenseRequest {
+  amount: number;
+  subcategory_id?: number;
+  user_id?: number;
+  note?: string;
+}
+
+interface CreateExpenseResponse {
+  id: number;
+  amount: number;
+  message: string;
+}
+
+export const useCreateExpense = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (
+      data: CreateExpenseRequest
+    ): Promise<CreateExpenseResponse> => {
+      return api.post<CreateExpenseResponse>("/expenses", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+    },
+  });
+};
 
 export const useTodayExpenses = (date?: Date) => {
   const targetDate = date || new Date();

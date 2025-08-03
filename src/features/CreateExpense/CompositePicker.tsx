@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useCreateExpenseStore } from "./store/createExpenseStore";
-import { useQuery } from "@tanstack/react-query";
-import { api } from "../../utils/api";
-import type { Category } from "../../types/category";
+import { useCategories } from "../../api/categories";
+import type { SubcategoryExpenseCount } from "../../types/subcategory";
 
 interface CompositePickerProps {
-  subcategories: any[];
+  subcategories: SubcategoryExpenseCount[];
 }
 
 export default function CompositePicker({
@@ -16,18 +15,11 @@ export default function CompositePicker({
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   );
-  const [availableSubcategories, setAvailableSubcategories] = useState<any[]>(
-    []
-  );
+  const [availableSubcategories, setAvailableSubcategories] = useState<
+    SubcategoryExpenseCount[]
+  >([]);
 
-  const { data: categories } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async (): Promise<Category[]> => {
-      return api.get<Category[]>("/categories");
-    },
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-  });
+  const { data: categories } = useCategories();
 
   useEffect(() => {
     if (selectedCategoryId) {
@@ -35,12 +27,19 @@ export default function CompositePicker({
         (sub) => sub.category_id === selectedCategoryId
       );
       setAvailableSubcategories(filtered);
-      setSelectedSubcategoryId(null);
+      if (
+        selectedSubcategoryId &&
+        !filtered.some((sub) => sub.subcategory_id === selectedSubcategoryId)
+      ) {
+        setSelectedSubcategoryId(null);
+      }
     } else {
       setAvailableSubcategories([]);
-      setSelectedSubcategoryId(null);
+      if (selectedSubcategoryId) {
+        setSelectedSubcategoryId(null);
+      }
     }
-  }, [selectedCategoryId, subcategories, setSelectedSubcategoryId]);
+  }, [selectedCategoryId, subcategories, selectedSubcategoryId]);
 
   const handleCategoryChange = (categoryId: string) => {
     if (categoryId) {

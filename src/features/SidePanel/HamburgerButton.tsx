@@ -1,6 +1,6 @@
 import { useSidePanelStore } from "./sidePanelStore";
 import { Menu } from "lucide-react";
-import IconButton from "../../shared/IconButton";
+import IconButton from "../../shared/IconButton/IconButton";
 
 export const HamburgerButton = () => {
   const { open } = useSidePanelStore();

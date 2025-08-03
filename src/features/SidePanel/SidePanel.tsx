@@ -1,6 +1,6 @@
 import { useSidePanelStore } from "./sidePanelStore";
 import { X } from "lucide-react";
-import IconButton from "../../shared/IconButton";
+import IconButton from "../../shared/IconButton/IconButton";
 
 export const SidePanel = () => {
   const { isOpen, close } = useSidePanelStore();

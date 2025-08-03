@@ -1,5 +1,5 @@
 import { Edit, Trash2 } from "lucide-react";
-import IconButton from "../IconButton";
+import IconButton from "../IconButton/IconButton";
 
 interface CardProps {
   title: string;

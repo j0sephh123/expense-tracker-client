@@ -5,7 +5,7 @@ import Loading from "../shared/Loading";
 import DayNavigation from "./DayNavigation";
 import { formatDate, getIsToday, addDays, subtractDays } from "../utils/date";
 import NoExpenses from "../shared/NoExpenses";
-import Card from "../shared/Card/Card";
+import ExpenseCard from "./ExpenseCard";
 import TotalExpenses from "./TotalExpenses";
 import { useDeleteModalStore } from "../store/deleteModalStore";
 
@@ -64,7 +64,7 @@ const DailyExpenses = () => {
       ) : (
         <div className="space-y-2">
           {expenses.map((expense) => (
-            <Card
+            <ExpenseCard
               key={expense.id}
               title={expense.subcategory_name || "Unknown"}
               subtitle={expense.category_name || "Unknown Category"}

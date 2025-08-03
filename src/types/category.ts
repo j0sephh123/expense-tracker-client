@@ -1,7 +1,7 @@
 export interface Category {
   id: number;
   name: string;
-  subcategories: Subcategory[];
+  subcategories?: Subcategory[];
 }
 
 export interface Subcategory {

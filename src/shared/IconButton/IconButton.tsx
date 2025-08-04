@@ -17,7 +17,7 @@ const IconButton = ({
   disabled = false,
 }: IconButtonProps) => {
   const baseClasses =
-    "inline-flex items-center justify-center border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 p-1.5 rounded-md";
+    "inline-flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 p-1.5 rounded-md";
 
   const variantClasses = {
     primary: "border-blue-600 text-blue-300 focus:ring-blue-600",

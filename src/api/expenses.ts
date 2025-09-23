@@ -294,12 +294,12 @@ export const useCategoryExpensesByMonth = (categoryId: number, month: Date) => {
 };
 
 export const useGroupedExpensesBySubcategory = (
-  month: Date,
+  date: Date,
   shouldFetch: boolean = false,
   userId?: string
 ) => {
-  const monthNumber = month.getMonth();
-  const year = month.getFullYear();
+  const monthNumber = date.getMonth();
+  const year = date.getFullYear();
   const user = useAuthStore((state) => state.user);
 
   return useQuery({
@@ -323,19 +323,6 @@ export const useGroupedExpensesBySubcategory = (
       total: string;
     }> => {
       try {
-        let userParam = "";
-        if (user?.role !== "ADMIN") {
-          userParam = user?.id ? `&user_id=${user.id}` : "";
-        } else if (userId !== undefined) {
-          if (userId === "") {
-            userParam = ""; // All users - no user_id parameter
-          } else if (userId === "0") {
-            userParam = "&user_id=0"; // No user
-          } else {
-            userParam = `&user_id=${userId}`; // Specific user
-          }
-        }
-
         const response = await api.get<{
           expenses: Array<{
             subcategory_name: string;
@@ -344,7 +331,7 @@ export const useGroupedExpensesBySubcategory = (
           }>;
           total: string;
         }>(
-          `/grouped-expenses-by-subcategory?month=${monthNumber}&year=${year}${userParam}`
+          `/grouped-expenses-by-subcategory?month=${monthNumber}&year=${year}&user_id=${userId}`
         );
         console.log("Grouped expenses by subcategory:", response);
         return response;

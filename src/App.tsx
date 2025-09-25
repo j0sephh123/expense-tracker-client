@@ -4,7 +4,7 @@ import DailyExpenses from "./components/DailyExpenses";
 
 function App() {
   return (
-    <PageWrapper title="Expense Tracker">
+    <PageWrapper title="Expense Tracker 123">
       <DailyExpenses />
     </PageWrapper>
   );

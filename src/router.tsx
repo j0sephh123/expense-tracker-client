@@ -11,6 +11,7 @@ import CategoriesWrapper from "./components/CategoriesWrapper";
 import Categories from "./features/Categories/Categories";
 import Login from "./features/Auth/Login";
 import ProtectedRoute from "./features/Auth/ProtectedRoute";
+import ShoppingList from "./features/ShoppingList/ShoppingList";
 
 export const router = (
   <BrowserRouter>
@@ -40,6 +41,7 @@ export const router = (
 
         <Route path="create-expense" element={<CreateExpense />} />
         <Route path="create-category" element={<CreateCategory />} />
+        <Route path="shopping-list" element={<ShoppingList />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

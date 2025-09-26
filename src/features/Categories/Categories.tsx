@@ -10,7 +10,8 @@ import CategoryCard from "./CategoryCard";
 import { useRenameModalStore } from "../../store/renameModalStore";
 import { useDeleteModalStore } from "../../store/deleteModalStore";
 import PageWrapper from "../../shared/PageWrapper";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { Plus } from "lucide-react";
 
 export default function Categories() {
   const navigate = useNavigate();
@@ -57,6 +58,10 @@ export default function Categories() {
 
   return (
     <PageWrapper title="Categories">
+      <Link className="flex items-center gap-2 my-2" to="/create-category">
+        <Plus className="w-6 h-6" />
+        <span className="text-lg">Add Category</span>
+      </Link>
       <div className="space-y-4">
         {categories.map((category) => {
           const hasSubcategories =

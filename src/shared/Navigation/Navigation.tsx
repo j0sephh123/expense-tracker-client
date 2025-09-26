@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { Home, FolderKanban, CirclePlus, Plus } from "lucide-react";
+import { Home, FolderKanban, CirclePlus, ShoppingCart } from "lucide-react";
 
 export default function Navigation() {
   const location = useLocation();
@@ -52,15 +52,15 @@ export default function Navigation() {
         </Link>
         <Link
           className={`flex-1 flex flex-col items-center p-2 rounded-lg transition-colors ${
-            isActive("/create-category")
+            isActive("/shopping-list")
               ? "text-blue-400 bg-blue-900 dark:bg-blue-800 dark:text-blue-300"
               : "text-base-content"
           }`}
-          to="/create-category"
+          to="/shopping-list"
           data-discover="true"
         >
-          <Plus className="w-6 h-6" />
-          <span className="text-xs mt-1">Add Category</span>
+          <ShoppingCart className="w-6 h-6" />
+          <span className="text-xs mt-1">Shopping list</span>
         </Link>
       </div>
     </nav>
